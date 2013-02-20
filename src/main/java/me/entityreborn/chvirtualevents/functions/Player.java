@@ -5,11 +5,13 @@
 package me.entityreborn.chvirtualevents.functions;
 
 import com.laytonsmith.abstraction.MCHumanEntity;
+import com.laytonsmith.abstraction.MCInventory;
 import com.laytonsmith.abstraction.MCPlayer;
 import com.laytonsmith.annotations.api;
 import com.laytonsmith.annotations.shutdown;
 import com.laytonsmith.core.CHVersion;
 import com.laytonsmith.core.Static;
+import com.laytonsmith.core.constructs.CArray;
 import com.laytonsmith.core.constructs.CNull;
 import com.laytonsmith.core.constructs.CString;
 import com.laytonsmith.core.constructs.CVoid;
@@ -154,6 +156,60 @@ public class Player {
         public String docs() {
             return "string {[player]} Returns the id of the virtual chest a player is"
                     + " looking at, or null.";
+        }
+
+        public CHVersion since() {
+            return CHVersion.V3_3_1;
+        }
+    }
+    
+    @api(environments = {CommandHelperEnvironment.class})
+    public static class pviewing_virtualchest extends AbstractFunction {
+
+        public Exceptions.ExceptionType[] thrown() {
+            return new Exceptions.ExceptionType[]{Exceptions.ExceptionType.FormatException, 
+                Exceptions.ExceptionType.NullPointerException};
+        }
+
+        public boolean isRestricted() {
+            return true;
+        }
+
+        public Boolean runAsync() {
+            return false;
+        }
+
+        public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
+            CArray arr = new CArray(t);
+            String id = args[0].getValue();
+
+            if (id.isEmpty() || args[0] instanceof CNull) {
+                throw new ConfigRuntimeException("invalid id. Use either a string or integer.", Exceptions.ExceptionType.FormatException, t);
+            }
+            
+            MCInventory inv = VirtualChests.get(id);
+            
+            if (inv == null) {
+                throw new ConfigRuntimeException("unknown chest id. Please consult all_virtualchests().", Exceptions.ExceptionType.NullPointerException, t);
+            }
+                
+            for (MCHumanEntity p : inv.getViewers()) {
+                arr.push(new CString(p.getName(), t));
+            }
+
+            return arr;
+        }
+
+        public String getName() {
+            return "pviewing_virtualchest";
+        }
+
+        public Integer[] numArgs() {
+            return new Integer[]{1};
+        }
+
+        public String docs() {
+            return "array {id} Returns the playernames of all players viewing a certain chest.";
         }
 
         public CHVersion since() {
