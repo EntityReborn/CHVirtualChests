@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package me.entityreborn.chvirtualevents.functions;
+package me.entityreborn.chvirtualchests.functions;
 
 import com.laytonsmith.abstraction.MCHumanEntity;
 import com.laytonsmith.abstraction.MCInventory;
@@ -22,7 +22,7 @@ import com.laytonsmith.core.environments.Environment;
 import com.laytonsmith.core.exceptions.ConfigRuntimeException;
 import com.laytonsmith.core.functions.AbstractFunction;
 import com.laytonsmith.core.functions.Exceptions;
-import me.entityreborn.chvirtualevents.VirtualChests;
+import me.entityreborn.chvirtualchests.VirtualChests;
 
 /**
  *

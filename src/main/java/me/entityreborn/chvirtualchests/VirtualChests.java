@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package me.entityreborn.chvirtualevents;
+package me.entityreborn.chvirtualchests;
 
 import com.laytonsmith.abstraction.MCInventory;
 import com.laytonsmith.abstraction.MCInventoryHolder;

@@ -10,7 +10,6 @@ import com.laytonsmith.abstraction.events.MCInventoryOpenEvent;
 import com.laytonsmith.annotations.api;
 import com.laytonsmith.annotations.event;
 import com.laytonsmith.core.CHVersion;
-import com.laytonsmith.core.ObjectGenerator;
 import com.laytonsmith.core.constructs.CArray;
 import com.laytonsmith.core.constructs.CString;
 import com.laytonsmith.core.constructs.Construct;
@@ -22,7 +21,7 @@ import com.laytonsmith.core.events.EventUtils;
 import com.laytonsmith.core.exceptions.EventException;
 import com.laytonsmith.core.exceptions.PrefilterNonMatchException;
 import java.util.Map;
-import me.entityreborn.chvirtualevents.VirtualChests;
+import me.entityreborn.chvirtualchests.VirtualChests;
 
 /**
  *
