@@ -95,9 +95,9 @@ public class General {
         }
 
         public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
-            String id = args[1].getValue();
+            String id = args[0].getValue();
 
-            if (id.isEmpty() || args[1] instanceof CNull) {
+            if (id.isEmpty() || args[0] instanceof CNull) {
                 throw new ConfigRuntimeException("invalid id. Use either a string or integer.", Exceptions.ExceptionType.FormatException, t);
             }
                 
@@ -111,7 +111,7 @@ public class General {
         }
 
         public String getName() {
-            return "pclose_virtualchest";
+            return "close_virtualchest";
         }
 
         public Integer[] numArgs() {
