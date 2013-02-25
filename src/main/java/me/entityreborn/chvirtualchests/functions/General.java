@@ -78,7 +78,7 @@ public class General {
             return CHVersion.V3_3_1;
         }
     }
-    
+
     @api(environments = {CommandHelperEnvironment.class})
     public static class close_virtualchest extends AbstractFunction {
 
@@ -100,13 +100,13 @@ public class General {
             if (id.isEmpty() || args[0] instanceof CNull) {
                 throw new ConfigRuntimeException("invalid id. Use either a string or integer.", Exceptions.ExceptionType.FormatException, t);
             }
-                
+
             MCInventory inv = VirtualChests.get(id);
-            
+
             for (MCHumanEntity ent : inv.getViewers()) {
-                    ent.closeInventory();
+                ent.closeInventory();
             }
-            
+
             return new CVoid(t);
         }
 
@@ -143,7 +143,7 @@ public class General {
             return false;
         }
 
-        public Construct exec(Target t, Environment environment, Construct... args) 
+        public Construct exec(Target t, Environment environment, Construct... args)
                 throws ConfigRuntimeException {
             CArray items = CArray.GetAssociativeArray(t);
             MCInventory inv;
@@ -153,13 +153,13 @@ public class General {
                 inv = VirtualChests.fromCArray(t, items);
             } else {
                 throw new ConfigRuntimeException("bad arguments. Expecting item "
-                        + "array including 'id', and optionally 'size' and 'title'.", 
+                        + "array including 'id', and optionally 'size' and 'title'.",
                         Exceptions.ExceptionType.FormatException, t);
             }
-            
+
             VirtualChests.setContents(inv, items, t);
             VirtualChests.set(VirtualChests.getID(inv), inv);
-            
+
             return new CVoid(t);
         }
 
@@ -201,49 +201,39 @@ public class General {
         public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
             int size = 54;
             String title = "Virtual Chest";
-
-            if (args[0] instanceof CArray) {
-                if (args.length == 1) {
-                    CArray array = (CArray) args[0];
-                    String id;
-
-                    if (array.containsKey("id")) {
-                        id = array.get("id").getValue();
-                    } else {
-                        throw new ConfigRuntimeException("Expecting item with key 'id' in array", Exceptions.ExceptionType.FormatException, t);
-                    }
-
-                    if (array.containsKey("size") && array.get("size") instanceof CInt) {
-                        size = (int) ((CInt) array.get("size")).getInt();
-                    }
-
-                    if (array.containsKey("title")) {
-                        title = array.get("title").getValue();
-                    }
-
-                    VirtualChests.set(id, VirtualChests.create(id, size, title));
-
-                    MCInventory inv = VirtualChests.get(id);
-
-                    VirtualChests.setContents(inv, array, t);
-
+            String id;
+            MCInventory inv;
+            CArray items;
+            if (args.length == 2) {
+                if (args[0].val().isEmpty() || args[0] instanceof CNull) {
+                    throw new ConfigRuntimeException("invalid id. Use either a string or integer.", Exceptions.ExceptionType.FormatException, t);
                 }
-            } else if (args[1] instanceof CArray) {
-                String id = args[0].getValue();
-                CArray array = (CArray) args[1];
 
-                VirtualChests.set(id, VirtualChests.create(id));
+                id = args[0].val();
 
-                MCInventory inv = VirtualChests.get(id);
-
-                VirtualChests.setContents(inv, array, t);
-
-            } else if (args[1] instanceof CNull) {
-                String id = args[0].getValue();
-                VirtualChests.del(id);
+                if (args[1] instanceof CArray) {
+                    items = (CArray) args[1];
+                } else if (args[0] instanceof CNull){
+                    VirtualChests.del(id);
+                    
+                    return new CVoid(t);
+                } else {
+                    throw new ConfigRuntimeException("Expecting an array or null as argument 2", Exceptions.ExceptionType.CastException, t);
+                }
             } else {
-                throw new ConfigRuntimeException("Expecting an array or null as argument 2", Exceptions.ExceptionType.CastException, t);
+                if (args[0] instanceof CArray) {
+                    items = (CArray) args[0];
+                    inv = VirtualChests.fromCArray(t, items);
+                    id = VirtualChests.getID(inv);
+                } else {
+                    throw new ConfigRuntimeException("Expecting an array or null as argument 2", Exceptions.ExceptionType.CastException, t);
+                }
             }
+
+            VirtualChests.set(id, VirtualChests.create(id, size, title));
+
+            inv = VirtualChests.get(id);
+            VirtualChests.setContents(inv, items, t);
 
             return new CVoid(t);
         }
@@ -253,7 +243,7 @@ public class General {
         }
 
         public Integer[] numArgs() {
-            return new Integer[]{1,2};
+            return new Integer[]{1, 2};
         }
 
         public String docs() {
@@ -286,24 +276,41 @@ public class General {
         }
 
         public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
-            String id = args[0].getValue();
-
-            if (args[1] instanceof CArray) {
-                CArray array = (CArray) args[1];
-
-                if (VirtualChests.get(id) == null) {
-                    VirtualChests.set(id, VirtualChests.create(id));
+            String id;
+            MCInventory inv;
+            CArray items;
+            if (args.length == 2) {
+                if (args[0].val().isEmpty() || args[0] instanceof CNull) {
+                    throw new ConfigRuntimeException("invalid id. Use either a string or integer.", Exceptions.ExceptionType.FormatException, t);
                 }
 
-                MCInventory inv = VirtualChests.get(id);
+                id = args[0].val();
 
-                VirtualChests.setContents(inv, array, t);
-
-            } else if (args[1] instanceof CNull) {
-                VirtualChests.del(id);
+                if (args[1] instanceof CArray) {
+                    items = (CArray) args[1];
+                } else {
+                    throw new ConfigRuntimeException("Expecting an array or null as argument 2", Exceptions.ExceptionType.CastException, t);
+                }
             } else {
-                throw new ConfigRuntimeException("Expecting an array or null as argument 2", Exceptions.ExceptionType.CastException, t);
+                if (args[0] instanceof CArray) {
+                    items = (CArray) args[0];
+                    
+                    if (!items.containsKey("id")) {
+                        throw new ConfigRuntimeException("No id specified in array. Use either a string or integer.", Exceptions.ExceptionType.FormatException, t);
+                    }
+                    
+                    id = items.get("id").val();
+                } else {
+                    throw new ConfigRuntimeException("Expecting an array or null as argument 2", Exceptions.ExceptionType.CastException, t);
+                }
             }
+
+            if (VirtualChests.get(id) == null) {
+                VirtualChests.set(id, VirtualChests.create(id));
+            }
+
+            inv = VirtualChests.get(id);
+            VirtualChests.setContents(inv, items, t);
 
             return new CVoid(t);
         }
@@ -313,7 +320,7 @@ public class General {
         }
 
         public Integer[] numArgs() {
-            return new Integer[]{2};
+            return new Integer[]{1, 2};
         }
 
         public String docs() {
