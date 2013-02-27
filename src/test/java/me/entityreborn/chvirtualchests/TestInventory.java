@@ -10,9 +10,6 @@ import com.laytonsmith.abstraction.MCInventoryHolder;
 import com.laytonsmith.abstraction.MCItemStack;
 import com.laytonsmith.abstraction.StaticLayer;
 import com.laytonsmith.abstraction.enums.MCInventoryType;
-import com.laytonsmith.core.constructs.CArray;
-import com.laytonsmith.core.constructs.CInt;
-import com.laytonsmith.core.constructs.Target;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,9 +20,9 @@ import java.util.Map;
  * @author import
  */
 public abstract class TestInventory implements MCInventory {
-    VirtualHolder holder;
-    List<MCHumanEntity> viewers;
-    Map<Integer, MCItemStack> items;
+    public VirtualHolder holder;
+    public List<MCHumanEntity> viewers;
+    public Map<Integer, MCItemStack> items;
     
     public TestInventory(String id) {
         holder = new VirtualHolder(id);
@@ -69,5 +66,9 @@ public abstract class TestInventory implements MCInventory {
 
     public Object getHandle() {
         return this;
+    }
+
+    public Map<Integer, MCItemStack> addItem(MCItemStack stack) {
+        return items;
     }
 }
