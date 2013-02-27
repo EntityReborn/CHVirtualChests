@@ -7,6 +7,8 @@ package me.entityreborn.chvirtualchests;
 import com.laytonsmith.abstraction.MCInventory;
 import com.laytonsmith.abstraction.MCInventoryHolder;
 import com.laytonsmith.abstraction.MCItemStack;
+import com.laytonsmith.annotations.shutdown;
+import com.laytonsmith.annotations.startup;
 import com.laytonsmith.core.ObjectGenerator;
 import com.laytonsmith.core.Static;
 import com.laytonsmith.core.constructs.CArray;
@@ -24,9 +26,42 @@ import java.util.Set;
  * @author Jason Unger <entityreborn@gmail.com>
  */
 public class VirtualChests {
+    private static String VERSION;
     
     private static Map<String, MCInventory> chests =
             new HashMap<String, MCInventory>();
+    
+    static {
+        Package p = VirtualChests.class.getPackage();
+
+        if (p == null) {
+            p = Package.getPackage("me.entityreborn.chvirtualchests");
+        }
+        
+        VERSION = "(unknown)";
+        
+        if (p != null) {
+            String v = p.getImplementationVersion();
+
+            if (v != null) {
+                VERSION = v;
+            }
+        }
+    }
+    
+    public static String getVersion() {
+        return VERSION;
+    }
+    
+    @startup
+    public static void startup() {
+        System.out.println(getVersion() + " loaded.");
+    }
+    
+    @shutdown
+    public static void shutdown() {
+        System.out.println(getVersion() + " unloaded.");
+    }
 
     public static MCInventory get(String id) {
         return chests.get(id.toLowerCase().trim());

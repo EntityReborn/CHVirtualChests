@@ -27,13 +27,13 @@ import org.powermock.modules.junit4.PowerMockRunner;
  * @author Layton
  */
 @RunWith(PowerMockRunner.class)
-public class Functions {
+public class FunctionalTest {
 
     static MCPlayer fakePlayer;
     static VirtualChests vc;
     static MCInventory inv;
 
-    public Functions() {
+    public FunctionalTest() {
     }
     
     @BeforeClass
