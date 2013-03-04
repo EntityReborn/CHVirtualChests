@@ -15,10 +15,13 @@ Wanna help out? Contact `__import__` on IRC.
 ##Installation
 Make sure you are running a dev build of CommandHelper, run it at least once, and dump the JAR file in plugins/CommandHelper/extensions.
 
+##License
+This code is released under the MIT license, found in `LICENSE.md`. Please read that file for more info.
+
 ##Credits
 CommandHelper - `LadyCailin`
 
-Programming - [`__import__`][import] aka EntityReborn
+Programming - [`__import__`][import] aka `EntityReborn`
 
 Sponsor - [`kookster`][kookster]
 

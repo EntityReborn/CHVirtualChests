@@ -6,14 +6,27 @@
     <version>1.0.2-SNAPSHOT</version>
     <name>CHVirtualChests</name>
     <description>CHVirtualChests is an extension to CommandHelper which exposes a virtual chest system.</description>
-
+    
+    <ciManagement>
+        <system>hudson</system>
+        <url>http://build.zeoldcraft.com/job/CHVirtualChests/</url>
+    </ciManagement>
+    
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     
+    <licenses>
+        <license>
+            <name>The MIT License</name>
+            <url>http://www.opensource.org/licenses/mit-license.php</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+    
     <scm>
         <connection>scm:git:git://github.com:EntityReborn/CHVirtualChests.git</connection>
-        <url>https://github.com/entityreborn/chvirtualchests</url>
+        <url>https://github.com/EntityReborn/CHVirtualChests</url>
         <developerConnection>scm:git:git@github.com:EntityReborn/CHVirtualChests.git</developerConnection>
     </scm>
     
