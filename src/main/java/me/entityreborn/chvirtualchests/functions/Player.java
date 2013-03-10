@@ -48,7 +48,7 @@ import me.entityreborn.chvirtualchests.VirtualChests;
  * @author Jason Unger <entityreborn@gmail.com>
  */
 public class Player {
-    
+
     @shutdown
     public static void onShutdown() {
         for (String id : VirtualChests.getAll()) {
@@ -63,7 +63,7 @@ public class Player {
             }
         }
     }
-    
+
     @api(environments = {CommandHelperEnvironment.class})
     public static class popen_virtualchest extends AbstractFunction {
 
@@ -146,16 +146,16 @@ public class Player {
         public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
             MCPlayer p;
 
-            if (args.length == 2) {
+            if (args.length == 1) {
                 p = Static.GetPlayer(args[0], t);
             } else {
                 p = environment.getEnv(CommandHelperEnvironment.class).GetPlayer();
             }
 
             Static.AssertPlayerNonNull(p, t);
-            
+
             String id = VirtualChests.getID(p.getOpenInventory().getTopInventory());
-            
+
             if (id != null) {
                 return new CString(id, t);
             }
@@ -181,12 +181,12 @@ public class Player {
             return CHVersion.V3_3_1;
         }
     }
-    
+
     @api(environments = {CommandHelperEnvironment.class})
     public static class pviewing_virtualchest extends AbstractFunction {
 
         public Exceptions.ExceptionType[] thrown() {
-            return new Exceptions.ExceptionType[]{Exceptions.ExceptionType.FormatException, 
+            return new Exceptions.ExceptionType[]{Exceptions.ExceptionType.FormatException,
                 Exceptions.ExceptionType.NullPointerException};
         }
 
@@ -205,13 +205,13 @@ public class Player {
             if (id.isEmpty() || args[0] instanceof CNull) {
                 throw new ConfigRuntimeException("invalid id. Use either a string or integer.", Exceptions.ExceptionType.FormatException, t);
             }
-            
+
             MCInventory inv = VirtualChests.get(id);
-            
+
             if (inv == null) {
                 throw new ConfigRuntimeException("unknown chest id. Please consult all_virtualchests().", Exceptions.ExceptionType.NullPointerException, t);
             }
-                
+
             for (MCHumanEntity p : inv.getViewers()) {
                 arr.push(new CString(p.getName(), t));
             }
