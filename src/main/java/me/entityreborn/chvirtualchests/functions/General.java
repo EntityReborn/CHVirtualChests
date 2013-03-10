@@ -232,9 +232,9 @@ public class General {
 
                 if (args[1] instanceof CArray) {
                     items = (CArray) args[1];
-                } else if (args[0] instanceof CNull){
+                } else if (args[0] instanceof CNull) {
                     VirtualChests.del(id);
-                    
+
                     return new CVoid(t);
                 } else {
                     throw new ConfigRuntimeException("Expecting an array or null as argument 2", Exceptions.ExceptionType.CastException, t);
@@ -245,7 +245,7 @@ public class General {
                     inv = VirtualChests.fromCArray(t, items);
                     id = VirtualChests.getID(inv);
                 } else {
-                    throw new ConfigRuntimeException("Expecting an array or null as argument 2", Exceptions.ExceptionType.CastException, t);
+                    throw new ConfigRuntimeException("Expecting an array or null as argument 1", Exceptions.ExceptionType.CastException, t);
                 }
             }
 
@@ -313,11 +313,11 @@ public class General {
             } else {
                 if (args[0] instanceof CArray) {
                     items = (CArray) args[0];
-                    
+
                     if (!items.containsKey("id")) {
                         throw new ConfigRuntimeException("No id specified in array. Use either a string or integer.", Exceptions.ExceptionType.FormatException, t);
                     }
-                    
+
                     id = items.get("id").val();
                 } else {
                     throw new ConfigRuntimeException("Expecting an array or null as argument 2", Exceptions.ExceptionType.CastException, t);
