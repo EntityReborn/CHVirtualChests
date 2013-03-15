@@ -16,7 +16,7 @@
   * [`pget_virtualchest`][pgetvc]
   * [`popen_virtualchest`][popenvc]
   * [`pviewing_virtualchest`][pviewingvc]
-  
+
 
 ###Events###
 
@@ -25,7 +25,7 @@
 *Event data:*
 
 * `player` - Name of the player viewing the chest.
- 
+
 * `chest` - [`@chestdata`][chestdata]
 
 [vcclosed]: #vcclosed
@@ -37,7 +37,7 @@
 *Event data:*
 
 * `player` - Name of the player viewing the chest.
- 
+
 * `chest` - [`@chestdata`][chestdata]
 
 [vcopened]: #vcopened
@@ -46,7 +46,7 @@
 
 ###General Functions###
 
-<a id="allvc"></a>`all_virtualchests()` - *Get a list of all the known cached virtualchest ids.* 
+<a id="allvc"></a>`all_virtualchests()` - *Get a list of all the known cached virtualchest ids.*
 
 *Returns:* non-associative array of strings relating to chest ids
 
@@ -54,7 +54,9 @@
 
 ---
 
-<a id="clearvc"></a>`clear_virtualchest(`[`@id`][id]`)` - *Remove all items from a virtual chest.*
+<a id="clearvc"></a>`clear_virtualchest(`[`@id`][id]`[, @slot])` - *Remove all items from a virtual chest, or clears one item slot.*
+
+If `@slot` is specified, only that slot is cleared.
 
 *Returns:* nothing
 
@@ -62,7 +64,7 @@
 
 ---
 
-<a id="closevc"></a>`close_virtualchest(`[`@id`][id]`)` - *Close a virtual chest for all of it's viewers.* 
+<a id="closevc"></a>`close_virtualchest(`[`@id`][id]`)` - *Close a virtual chest for all of it's viewers.*
 
 *Returns:* nothing
 
@@ -70,7 +72,7 @@
 
 ---
 
-<a id="createvc"></a>`create_virtualchest(`[`@chestdata`][chestdata]`)` - *Create a virtual chest with specified parameters.* 
+<a id="createvc"></a>`create_virtualchest(`[`@chestdata`][chestdata]`)` - *Create a virtual chest with specified parameters.*
 
 *Returns:* nothing
 
@@ -88,7 +90,7 @@ This will also close the virtualchest for any viewers.
 
 ----
 
-<a id="getvc"></a>`get_virtualchest(`[`@id`][id]`)` - *Get the contents and identifier variables for a chest with String identifier `@id`.* 
+<a id="getvc"></a>`get_virtualchest(`[`@id`][id]`)` - *Get the contents and identifier variables for a chest with String identifier `@id`.*
 
 *Returns:* [`@chestdata`][chestdata]
 
@@ -156,24 +158,24 @@ The original contents are still present if not replaced by the new array.
 
 ###Glossary###
 
-* <a id="id"></a>`id` - String - *The id of a virtual chest.* 
+* <a id="id"></a>`id` - String - *The id of a virtual chest.*
 
   Always required when working with a chest.
 [id]: #id
 
-* <a id="size"></a>`size` - Integer - *A capacity for a virtual chest.* 
+* <a id="size"></a>`size` - Integer - *A capacity for a virtual chest.*
 
   Must be a multiple of 9. Values greater than 54 will have graphical issues, but otherwise are accepted and functional. Defaults to `54`.
 [size]: #size
 
-* <a id="title"></a>`title` - String - *Displayed title when viewing a virtual chest.* 
+* <a id="title"></a>`title` - String - *Displayed title when viewing a virtual chest.*
 
   Defaults to `Virtual Chest`.
 [title]: #title
 
-* <a id="chestdata"></a>`chestdata` - Associative Array - *An array describing a virtual chest in a form that can be used with `get_value()` and `store_value()`.* 
+* <a id="chestdata"></a>`chestdata` - Associative Array - *An array describing a virtual chest in a form that can be used with `get_value()` and `store_value()`.*
 
-  Contains `id` and optionally `size` and `title`, as well as entries for [`@itemdata`][itemdata] whose keys refer to the slot number. Functions that return this will return null values in empty slots. 
+  Contains `id` and optionally `size` and `title`, as well as entries for [`@itemdata`][itemdata] whose keys refer to the slot number. Functions that return this will return null values in empty slots.
 
   `size` defaults to `54`, and `title` defaults to `Virtual Chest`.
 [chestdata]: #chestdata
@@ -183,5 +185,3 @@ The original contents are still present if not replaced by the new array.
 
 * <a id="itemarray"></a>`itemarray` - Associative Array - *An array describing a collection of [`@itemdata`][itemdata].* The keys are integers representing the slot.
 [itemarray]: #itemarray
-
-
