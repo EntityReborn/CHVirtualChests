@@ -70,7 +70,7 @@ public class General {
             }
 
             if (VirtualChests.get(id) == null) {
-                VirtualChests.set(id, VirtualChests.create(id));
+                return new CNull(t);
             }
 
             MCInventory inv = VirtualChests.get(id);
