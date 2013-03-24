@@ -102,7 +102,7 @@ public class Player {
             Static.AssertPlayerNonNull(p, t);
 
             if (VirtualChests.get(id) == null) {
-                VirtualChests.set(id, VirtualChests.create(id));
+                return new CNull(t);
             }
 
             p.openInventory(VirtualChests.get(id));

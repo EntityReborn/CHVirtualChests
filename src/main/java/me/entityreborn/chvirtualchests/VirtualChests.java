@@ -46,19 +46,19 @@ import java.util.Set;
  */
 public class VirtualChests {
     private static String VERSION;
-    
+
     private static Map<String, MCInventory> chests =
             new HashMap<String, MCInventory>();
-    
+
     static {
         Package p = VirtualChests.class.getPackage();
 
         if (p == null) {
             p = Package.getPackage("me.entityreborn.chvirtualchests");
         }
-        
+
         VERSION = "(unknown)";
-        
+
         if (p != null) {
             String v = p.getImplementationVersion();
 
@@ -67,16 +67,16 @@ public class VirtualChests {
             }
         }
     }
-    
+
     public static String getVersion() {
         return VERSION;
     }
-    
+
     @startup
     public static void startup() {
         System.out.println(getVersion() + " loaded.");
     }
-    
+
     @shutdown
     public static void shutdown() {
         System.out.println(getVersion() + " unloaded.");
@@ -119,9 +119,10 @@ public class VirtualChests {
             try {
                 int index = Integer.parseInt(key);
 
-                MCItemStack is = ObjectGenerator.GetGenerator().item(items.get(index), t);
-
                 if (index >= 0 && index < inv.getSize()) {
+
+                    MCItemStack is = ObjectGenerator.GetGenerator().item(items.get(index), t);
+
                     if (is.getTypeId() != 0) {
                         inv.setItem(index, is);
                     }
@@ -155,7 +156,7 @@ public class VirtualChests {
         String id = "";
         String title = "Virtual Chest";
         int size = 54;
-        
+
         if (array.containsKey("id")) {
             id = array.get("id").getValue();
         } else {
@@ -169,10 +170,10 @@ public class VirtualChests {
         if (array.containsKey("title")) {
             title = array.get("title").getValue();
         }
-        
+
         MCInventory inv = VirtualChests.create(id, size, title);
         VirtualChests.setContents(inv, array, t);
-        
+
         return inv;
     }
 
