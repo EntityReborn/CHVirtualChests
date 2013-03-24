@@ -12,6 +12,8 @@
   * [`get_virtualchest`][getvc]
   * [`set_virtualchest`][setvc]
   * [`update_virtualchest`][updatevc]
+  * [`addto_virtualchest`][addtovc]
+  * [`takefrom_virtualchest`][takefromvc]
 * Player Functions
   * [`pget_virtualchest`][pgetvc]
   * [`popen_virtualchest`][popenvc]
@@ -130,6 +132,22 @@ The original contents are still present if not replaced by the new array.
 
 ----
 
+<a id="addtovc"></a>`addto_virtualchest(`[`@id`][id]`,` [`@itemid`][itemid]`,` `@qty``,` `[,` [`@meta`][meta]`]``)` - *Add item with [`@itemid`][itemid] to a chest whose id is `@id`. You must specify quantity as integer in `@qty`. You can also add meta info in [`@meta`][meta].*
+
+*Returns:* `@qty` minus the number of items actually given, can be 0 if succeeded to add the whole quantity of items
+
+[addtovc]: #addtovc
+
+----
+
+<a id="takefromvc"></a>`takefrom_virtualchest(`[`@id`][id]`,` [`@itemid`][itemid]`,` `@qty``)` - *Take item with [`@itemid`][itemid] from a chest whose id is `@id`. You must specify quantity as integer in `@qty`.*
+
+*Returns:* the number of items actually taken, which will be from 0 to `@qty`
+
+[takefromvc]: #takefromvc
+
+----
+
 ###Player Functions###
 
 <a id="pgetvc"></a>`pget_virtualchest([@playername])` - *Get the chest the player is viewing.*
@@ -180,8 +198,14 @@ The original contents are still present if not replaced by the new array.
   `size` defaults to `54`, and `title` defaults to `Virtual Chest`.
 [chestdata]: #chestdata
 
-* <a id="itemdata"></a>`itemdata` - Associative Array - *An array describing an itemstack.* At the time of this writing, contains keys `type` (numeric Minecraft item type), `qty` (amount of this item), `data` (any numeric data, such as direction, color, etc), `enchantments` (associative array), `meta` (associative array)
+* <a id="itemid"></a>`itemid` - Integer - *An ID of item.*
+[itemid]: #itemid
+
+* <a id="itemdata"></a>`itemdata` - Associative Array - *An array describing an itemstack.* At the time of this writing, contains keys `type` (numeric Minecraft item type), `qty` (amount of this item), `data` (any numeric data, such as direction, color, etc), `enchantments` (associative array), [`@meta`][meta] (associative array)
 [itemdata]: #itemdata
 
 * <a id="itemarray"></a>`itemarray` - Associative Array - *An array describing a collection of [`@itemdata`][itemdata].* The keys are integers representing the slot.
 [itemarray]: #itemarray
+
+* <a id="meta"></a>`meta` - Associative Array - *An array describing a item data.* Please go to http://wiki.sk89q.com/wiki/CommandHelper/Staged/API/set_itemmeta for more details.
+[meta]: #meta
