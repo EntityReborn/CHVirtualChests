@@ -25,8 +25,13 @@ package me.entityreborn.chvirtualchests.functions;
 
 import com.laytonsmith.abstraction.MCHumanEntity;
 import com.laytonsmith.abstraction.MCInventory;
+import com.laytonsmith.abstraction.MCItemMeta;
+import com.laytonsmith.abstraction.MCItemStack;
+import com.laytonsmith.abstraction.StaticLayer;
 import com.laytonsmith.annotations.api;
 import com.laytonsmith.core.CHVersion;
+import com.laytonsmith.core.ObjectGenerator;
+import com.laytonsmith.core.Static;
 import com.laytonsmith.core.constructs.CArray;
 import com.laytonsmith.core.constructs.CInt;
 import com.laytonsmith.core.constructs.CNull;
@@ -39,6 +44,7 @@ import com.laytonsmith.core.environments.Environment;
 import com.laytonsmith.core.exceptions.ConfigRuntimeException;
 import com.laytonsmith.core.functions.AbstractFunction;
 import com.laytonsmith.core.functions.Exceptions;
+import java.util.Map;
 import me.entityreborn.chvirtualchests.VirtualChests;
 
 /**
@@ -280,6 +286,169 @@ public class General {
     }
 
     @api(environments = {CommandHelperEnvironment.class})
+    public static class addto_virtualchest extends AbstractFunction {
+
+        public Exceptions.ExceptionType[] thrown() {
+            return new Exceptions.ExceptionType[]{Exceptions.ExceptionType.FormatException};
+        }
+
+        public boolean isRestricted() {
+            return true;
+        }
+
+        public Boolean runAsync() {
+            return false;
+        }
+
+        public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
+            String id;
+            MCInventory inv;
+            MCItemStack is;
+            Construct m = null;
+
+            if (args[0].val().isEmpty() || args[0] instanceof CNull) {
+                throw new ConfigRuntimeException("invalid id. Use either a string or integer.", Exceptions.ExceptionType.FormatException, t);
+            }
+
+            id = args[0].val();
+
+            if (VirtualChests.get(id) == null) {
+                return new CNull(t);
+            }
+
+            is = Static.ParseItemNotation(this.getName(), args[1].val(), Static.getInt32(args[2], t), t);
+
+            if(args.length == 4) {
+                m = args[3];
+            }
+
+            MCItemMeta meta;
+            if (m != null) {
+                    meta = ObjectGenerator.GetGenerator().itemMeta(m, is.getTypeId(), t);
+            } else {
+                    meta = ObjectGenerator.GetGenerator().itemMeta(new CNull(), is.getTypeId(), t);
+            }
+
+            is.setItemMeta(meta);
+
+            inv = VirtualChests.get(id);
+
+            Map<Integer, MCItemStack> h = inv.addItem(is);
+
+            if (h.isEmpty()) {
+                    return new CInt(0, t);
+            } else {
+                    return new CInt(h.get(0).getAmount(), t);
+            }
+        }
+
+        public String getName() {
+            return "addto_virtualchest";
+        }
+
+        public Integer[] numArgs() {
+            return new Integer[]{3, 4};
+        }
+
+        public String docs() {
+            return "int {chestID, itemID, qty, [meta]} Adds to virtual chest the specified item * qty. The meta argument uses the"
+                    + " same format as [http://wiki.sk89q.com/wiki/CommandHelper/Staged/API/set_itemmeta set_itemmeta]."
+                    + " Unlike update_virtualchest(), this does not specify a slot. The qty is distributed"
+                    + " in the virtual chest, first filling up slots that have the same item"
+                    + " type, up to the max stack size, then fills up empty slots, until either"
+                    + " the entire virtual chest is filled, or the entire amount has been given."
+                    + " The number of items that couldn't be added is returned, which will be less than"
+                    + " or equal to the quantity provided. Supports 'infinite' stacks by providing a negative number."
+                    + " If the virtual chest is full, 0 is returned in this case instead of the amount given.";
+        }
+
+        public CHVersion since() {
+            return CHVersion.V3_3_1;
+        }
+    }
+
+    @api(environments = {CommandHelperEnvironment.class})
+    public static class takefrom_virtualchest extends AbstractFunction {
+
+        public Exceptions.ExceptionType[] thrown() {
+            return new Exceptions.ExceptionType[]{Exceptions.ExceptionType.FormatException};
+        }
+
+        public boolean isRestricted() {
+            return true;
+        }
+
+        public Boolean runAsync() {
+            return false;
+        }
+
+        public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
+            String id;
+            MCInventory inv;
+            MCItemStack is;
+
+            if (args[0].val().isEmpty() || args[0] instanceof CNull) {
+                throw new ConfigRuntimeException("invalid id. Use either a string or integer.", Exceptions.ExceptionType.FormatException, t);
+            }
+
+            id = args[0].val();
+
+            if (VirtualChests.get(id) == null) {
+                return new CNull(t);
+            }
+
+            is = Static.ParseItemNotation(this.getName(), args[1].val(), Static.getInt32(args[2], t), t);
+
+            inv = VirtualChests.get(id);
+
+            int total = is.getAmount();
+            int remaining = is.getAmount();
+
+            for (int i = inv.getSize() - 1; i >= 0; i--) {
+                MCItemStack iis = inv.getItem(i);
+                if (remaining <= 0) {
+                    break;
+                }
+
+                if (match(is, iis)) {
+                    int toTake = java.lang.Math.min(remaining, iis.getAmount());
+                    remaining -= toTake;
+                    int replace = iis.getAmount() - toTake;
+                    if (replace == 0) {
+                        inv.setItem(i, StaticLayer.GetItemStack(0, 0));
+                    } else {
+                        inv.setItem(i, StaticLayer.GetItemStack(is.getTypeId(), is.getData().getData(), replace));
+                    }
+                }
+            }
+
+            return new CInt(total - remaining, t);
+        }
+
+        public String getName() {
+            return "takefrom_virtualchest";
+        }
+
+        public Integer[] numArgs() {
+            return new Integer[]{3};
+        }
+
+        public String docs() {
+            return "int {chestID, itemID, qty} Works in reverse of addto_virtualchest(), but"
+                    + " returns the number of items actually taken, which will be"
+                    + " from 0 to qty.";
+        }
+
+        private boolean match(MCItemStack is, MCItemStack iis){
+            return (is.getTypeId() == iis.getTypeId() && is.getData().getData() == iis.getData().getData());
+        }
+
+        public CHVersion since() {
+            return CHVersion.V3_3_1;
+        }
+    }
+
+    @api(environments = {CommandHelperEnvironment.class})
     public static class update_virtualchest extends AbstractFunction {
 
         public Exceptions.ExceptionType[] thrown() {
@@ -325,7 +494,7 @@ public class General {
             }
 
             if (VirtualChests.get(id) == null) {
-                VirtualChests.set(id, VirtualChests.create(id));
+                return new CNull(t);
             }
 
             inv = VirtualChests.get(id);
