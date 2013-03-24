@@ -6,6 +6,7 @@ import com.laytonsmith.abstraction.blocks.MCMaterial;
 import com.laytonsmith.abstraction.bukkit.BukkitConvertor;
 import com.laytonsmith.abstraction.bukkit.BukkitMCLocation;
 import com.laytonsmith.abstraction.bukkit.BukkitMCWorld;
+import com.laytonsmith.abstraction.entities.MCFirework;
 import com.laytonsmith.abstraction.enums.MCTone;
 import com.laytonsmith.annotations.convert;
 import com.laytonsmith.annotations.noboilerplate;
@@ -85,7 +86,7 @@ public class StaticTest {
             fail("Expected name of function to be " + name + ", but was given " + f.getName());
         }
 
-        //docs needs to at least be more than a non-empty string, though in the future this should follow a more strict 
+        //docs needs to at least be more than a non-empty string, though in the future this should follow a more strict
         //requirement set.
         if (f.docs().length() <= 0) {
             fail("docs must return a non-empty string");
@@ -494,19 +495,19 @@ public class StaticTest {
 //        env.SetCommandSender(player);
 //        MethodScriptCompiler.compile(MethodScriptCompiler.lex(script, null));
 //        injectAliasCore();
-//        Script s = MethodScriptCompiler.preprocess(MethodScriptCompiler.lex(script, null), env).get(0);        
+//        Script s = MethodScriptCompiler.preprocess(MethodScriptCompiler.lex(script, null), env).get(0);
 //        s.compile();
 //        s.run(vars, env, null);
-//        
+//
 //    }
 
     //Blarg. Dumb thing.
 //    private static void injectAliasCore() throws ConfigCompileException{
 //        PermissionsResolverManager prm = mock(PermissionsResolverManager.class);
 //        CommandHelperPlugin chp = mock(CommandHelperPlugin.class);
-//        AliasCore ac = new AliasCore(new File("plugins/CommandHelper/config.txt"), 
-//                new File("plugins/CommandHelper/LocalPackages"), 
-//                new File("plugins/CommandHelper/preferences.txt"), 
+//        AliasCore ac = new AliasCore(new File("plugins/CommandHelper/config.txt"),
+//                new File("plugins/CommandHelper/LocalPackages"),
+//                new File("plugins/CommandHelper/preferences.txt"),
 //                new File("plugins/CommandHelper/main.ms"), prm, chp);
 //        try{
 //            Field aliasCore = CommandHelperPlugin.class.getDeclaredField("ac");
@@ -711,6 +712,10 @@ public class StaticTest {
 
         @Override
         public MCItemMeta GetCorrectMeta(MCItemMeta im) {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+
+        public MCFireworkBuilder GetFireworkBuilder() {
             throw new UnsupportedOperationException("Not supported yet.");
         }
     }

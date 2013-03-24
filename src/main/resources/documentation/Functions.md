@@ -56,7 +56,9 @@
 
 ---
 
-<a id="clearvc"></a>`clear_virtualchest(`[`@id`][id]`)` - *Remove all items from a virtual chest.*
+<a id="clearvc"></a>`clear_virtualchest(`[`@id`][id]`[, @slot])` - *Remove all items from a virtual chest, or clears one item slot.*
+
+If `@slot` is specified, only that slot is cleared.
 
 *Returns:* nothing
 
