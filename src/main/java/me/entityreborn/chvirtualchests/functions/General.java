@@ -434,7 +434,7 @@ public class General {
         }
 
         public String docs() {
-            return "int {chestID, itemID, qty} Works in reverse of pgive_item(), but"
+            return "int {chestID, itemID, qty} Works in reverse of addto_virtualchest(), but"
                     + " returns the number of items actually taken, which will be"
                     + " from 0 to qty.";
         }
