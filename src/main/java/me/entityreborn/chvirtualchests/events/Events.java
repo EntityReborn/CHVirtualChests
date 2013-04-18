@@ -69,10 +69,10 @@ public class Events {
     }
 
     @api
-    public static class virtualchest_open extends AbstractEvent {
+    public static class virtualchest_opened extends AbstractEvent {
 
         public String getName() {
-            return "virtualchest_open";
+            return "virtualchest_opened";
         }
 
         public String docs() {
