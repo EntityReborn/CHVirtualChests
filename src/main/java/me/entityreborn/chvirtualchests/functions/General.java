@@ -127,9 +127,11 @@ public class General {
             }
 
             MCInventory inv = VirtualChests.get(id);
-
-            for (MCHumanEntity ent : inv.getViewers()) {
-                ent.closeInventory();
+            
+            if (inv != null) {
+                for (MCHumanEntity ent : inv.getViewers()) {
+                    ent.closeInventory();
+                }
             }
 
             return new CVoid(t);

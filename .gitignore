@@ -1,1 +1,4 @@
 /target/
+/preferences.txt
+/test-backend/
+/logs/
