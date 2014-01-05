@@ -54,7 +54,7 @@ public class Events {
         String id = VirtualChests.getID(inv);
 
         if (id != null) {
-            EventUtils.TriggerListener(Driver.EXTENSION, "virtualchest_open", event);
+            EventUtils.TriggerListener(Driver.EXTENSION, "virtualchest_opened", event);
         }
     }
 
