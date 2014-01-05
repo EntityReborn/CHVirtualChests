@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package me.entityreborn.chvirtualchests.functions;
+package com.entityreborn.chvirtualchests.functions;
 
 import com.laytonsmith.abstraction.MCHumanEntity;
 import com.laytonsmith.abstraction.MCInventory;
@@ -41,7 +41,7 @@ import com.laytonsmith.core.environments.Environment;
 import com.laytonsmith.core.exceptions.ConfigRuntimeException;
 import com.laytonsmith.core.functions.AbstractFunction;
 import com.laytonsmith.core.functions.Exceptions;
-import me.entityreborn.chvirtualchests.VirtualChests;
+import com.entityreborn.chvirtualchests.VirtualChests;
 
 /**
  *

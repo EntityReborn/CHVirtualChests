@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package me.entityreborn.chvirtualchests.events;
+package com.entityreborn.chvirtualchests.events;
 
 import com.laytonsmith.abstraction.MCInventory;
 import com.laytonsmith.abstraction.events.MCInventoryCloseEvent;
@@ -40,7 +40,7 @@ import com.laytonsmith.core.events.EventUtils;
 import com.laytonsmith.core.exceptions.EventException;
 import com.laytonsmith.core.exceptions.PrefilterNonMatchException;
 import java.util.Map;
-import me.entityreborn.chvirtualchests.VirtualChests;
+import com.entityreborn.chvirtualchests.VirtualChests;
 
 /**
  *
