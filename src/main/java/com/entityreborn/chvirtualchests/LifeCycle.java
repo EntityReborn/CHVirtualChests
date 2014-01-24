@@ -24,6 +24,8 @@
 
 package com.entityreborn.chvirtualchests;
 
+import com.laytonsmith.PureUtilities.SimpleVersion;
+import com.laytonsmith.PureUtilities.Version;
 import com.laytonsmith.core.extensions.AbstractExtension;
 import com.laytonsmith.core.extensions.MSExtension;
 
@@ -33,30 +35,6 @@ import com.laytonsmith.core.extensions.MSExtension;
  */
 @MSExtension("CHVirtualChests")
 public class LifeCycle extends AbstractExtension {
-    private static String VERSION;
-    
-     static {
-        Package p = VirtualChests.class.getPackage();
-
-        if (p == null) {
-            p = Package.getPackage("com.entityreborn.chvirtualchests");
-        }
-
-        VERSION = "(unknown)";
-
-        if (p != null) {
-            String v = p.getImplementationVersion();
-
-            if (v != null) {
-                VERSION = v;
-            }
-        }
-    }
-
-    public static String getVersion() {
-        return VERSION;
-    }
-
     @Override
     public void onStartup() {
         System.out.println("CHVC " + getVersion() + " loaded.");
@@ -66,5 +44,8 @@ public class LifeCycle extends AbstractExtension {
     public void onShutdown() {
         System.out.println("CHVC " + getVersion() + " unloaded.");
     }
-    
+
+    public Version getVersion() {
+        return new SimpleVersion(1,0,2);
+    }
 }
