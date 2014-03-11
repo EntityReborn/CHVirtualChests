@@ -79,7 +79,7 @@ public class VirtualChests {
     }
 
     public static MCInventory setContents(MCInventory inv, CArray items, Target t) {
-        for (String key : items.keySet()) {
+        for (String key : items.stringKeySet()) {
             try {
                 int index = Integer.parseInt(key);
 
