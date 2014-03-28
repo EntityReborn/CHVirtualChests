@@ -10,27 +10,24 @@ You can find the documentation [here][docs]. Please report any issues to the [bu
 Looking for the latest bleeding edge build? Head over to our [build server][ci] to grab it.
 Source code can be found [here][github].
 
-Wanna help out? Contact `__import__` on IRC.
+Wanna help out? Contact `LewsTherin` on IRC.
 
 ##Installation
 Make sure you are running a dev build of CommandHelper, run it at least once, and dump the JAR file in plugins/CommandHelper/extensions.
 
-##License
-This code is released under the MIT license, found in `LICENSE.md`. Please read that file for more info.
-
 ##Credits
 CommandHelper - `LadyCailin`
 
-Programming - [`__import__`][import] aka `EntityReborn`
+Programming - [`LewsTherin`][import] aka EntityReborn
 
 Sponsor - [`kookster`][kookster]
 
-Build Hosting - [`jb-aero`][jbaero]
+Build Hosting - [`chamunks`][hosting]
 
 [import]: http://github.com/EntityReborn/
 [github]: http://github.com/EntityReborn/CHVirtualChests
 [docs]: https://github.com/EntityReborn/CHVirtualChests/wiki/Documentation
 [issues]: https://github.com/EntityReborn/CHVirtualChests/issues
-[ci]: http://build.zeoldcraft.com/job/CHVirtualChests/lastSuccessfulBuild/ 
+[ci]: http://ci.nixium.com/job/CHVirtualChests/lastSuccessfulBuild/ 
 [kookster]: http://letsbuild.net
-[jbaero]: http://zeoldcraft.com/ 
+[hosting]: http://nixium.com/ 
