@@ -23,6 +23,7 @@
  */
 package com.entityreborn.chvirtualchests.functions;
 
+import com.entityreborn.chvirtualchests.VirtualChests;
 import com.laytonsmith.abstraction.MCHumanEntity;
 import com.laytonsmith.abstraction.MCInventory;
 import com.laytonsmith.abstraction.MCItemMeta;
@@ -45,7 +46,6 @@ import com.laytonsmith.core.exceptions.ConfigRuntimeException;
 import com.laytonsmith.core.functions.AbstractFunction;
 import com.laytonsmith.core.functions.Exceptions;
 import java.util.Map;
-import com.entityreborn.chvirtualchests.VirtualChests;
 
 /**
  *
@@ -76,7 +76,7 @@ public class General {
             }
 
             if (VirtualChests.get(id) == null) {
-                return new CNull(t);
+                return CNull.NULL;
             }
 
             MCInventory inv = VirtualChests.get(id);
@@ -134,7 +134,7 @@ public class General {
                 }
             }
 
-            return new CVoid(t);
+            return CVoid.VOID;
         }
 
         public String getName() {
@@ -187,7 +187,7 @@ public class General {
             VirtualChests.setContents(inv, items, t);
             VirtualChests.set(VirtualChests.getID(inv), inv);
 
-            return new CVoid(t);
+            return CVoid.VOID;
         }
 
         public String getName() {
@@ -243,7 +243,7 @@ public class General {
                 } else if (args[0] instanceof CNull) {
                     VirtualChests.del(id);
 
-                    return new CVoid(t);
+                    return CVoid.VOID;
                 } else {
                     throw new ConfigRuntimeException("Expecting an array or null as argument 2", Exceptions.ExceptionType.CastException, t);
                 }
@@ -262,7 +262,7 @@ public class General {
             inv = VirtualChests.get(id);
             VirtualChests.setContents(inv, items, t);
 
-            return new CVoid(t);
+            return CVoid.VOID;
         }
 
         public String getName() {
@@ -315,7 +315,7 @@ public class General {
             id = args[0].val();
 
             if (VirtualChests.get(id) == null) {
-                return new CNull(t);
+                return CNull.NULL;
             }
 
             is = Static.ParseItemNotation(this.getName(), args[1].val(), Static.getInt32(args[2], t), t);
@@ -328,7 +328,7 @@ public class General {
             if (m != null) {
                     meta = ObjectGenerator.GetGenerator().itemMeta(m, is.getTypeId(), t);
             } else {
-                    meta = ObjectGenerator.GetGenerator().itemMeta(new CNull(), is.getTypeId(), t);
+                    meta = ObjectGenerator.GetGenerator().itemMeta(CNull.NULL, is.getTypeId(), t);
             }
 
             is.setItemMeta(meta);
@@ -396,7 +396,7 @@ public class General {
             id = args[0].val();
 
             if (VirtualChests.get(id) == null) {
-                return new CNull(t);
+                return CNull.NULL;
             }
 
             is = Static.ParseItemNotation(this.getName(), args[1].val(), Static.getInt32(args[2], t), t);
@@ -496,13 +496,13 @@ public class General {
             }
 
             if (VirtualChests.get(id) == null) {
-                return new CNull(t);
+                return CNull.NULL;
             }
 
             inv = VirtualChests.get(id);
             VirtualChests.setContents(inv, items, t);
 
-            return new CVoid(t);
+            return CVoid.VOID;
         }
 
         public String getName() {
@@ -558,7 +558,7 @@ public class General {
                 }
             }
 
-            return new CVoid(t);
+            return CVoid.VOID;
         }
 
         public String getName() {
@@ -665,7 +665,7 @@ public class General {
                 inv.clear();
             }
 
-            return new CVoid(t);
+            return CVoid.VOID;
         }
 
         public String getName() {

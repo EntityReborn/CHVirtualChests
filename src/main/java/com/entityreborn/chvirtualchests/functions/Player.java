@@ -23,6 +23,7 @@
  */
 package com.entityreborn.chvirtualchests.functions;
 
+import com.entityreborn.chvirtualchests.VirtualChests;
 import com.laytonsmith.abstraction.MCHumanEntity;
 import com.laytonsmith.abstraction.MCInventory;
 import com.laytonsmith.abstraction.MCPlayer;
@@ -33,7 +34,6 @@ import com.laytonsmith.core.Static;
 import com.laytonsmith.core.constructs.CArray;
 import com.laytonsmith.core.constructs.CNull;
 import com.laytonsmith.core.constructs.CString;
-import com.laytonsmith.core.constructs.CVoid;
 import com.laytonsmith.core.constructs.Construct;
 import com.laytonsmith.core.constructs.Target;
 import com.laytonsmith.core.environments.CommandHelperEnvironment;
@@ -41,7 +41,6 @@ import com.laytonsmith.core.environments.Environment;
 import com.laytonsmith.core.exceptions.ConfigRuntimeException;
 import com.laytonsmith.core.functions.AbstractFunction;
 import com.laytonsmith.core.functions.Exceptions;
-import com.entityreborn.chvirtualchests.VirtualChests;
 
 /**
  *
@@ -102,12 +101,12 @@ public class Player {
             Static.AssertPlayerNonNull(p, t);
 
             if (VirtualChests.get(id) == null) {
-                return new CNull(t);
+                return CNull.NULL;
             }
 
             p.openInventory(VirtualChests.get(id));
 
-            return new CVoid(t);
+            return CNull.NULL;
         }
 
         public String getName() {
@@ -160,7 +159,7 @@ public class Player {
                 return new CString(id, t);
             }
 
-            return new CNull(t);
+            return CNull.NULL;
 
         }
 
