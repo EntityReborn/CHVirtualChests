@@ -85,7 +85,7 @@ public class VirtualChests {
 
                 if (index >= 0 && index < inv.getSize()) {
 
-                    MCItemStack is = ObjectGenerator.GetGenerator().item(items.get(index), t);
+                    MCItemStack is = ObjectGenerator.GetGenerator().item(items.get(index, t), t);
 
                     if (is.getTypeId() != 0) {
                         inv.setItem(index, is);
@@ -122,17 +122,17 @@ public class VirtualChests {
         int size = 54;
 
         if (array.containsKey("id")) {
-            id = array.get("id").getValue();
+            id = array.get("id", t).getValue();
         } else {
             throw new ConfigRuntimeException("Expecting item with key 'id' in arg 2 array", Exceptions.ExceptionType.FormatException, t);
         }
 
-        if (array.containsKey("size") && array.get("size") instanceof CInt) {
-            size = (int) ((CInt) array.get("size")).getInt();
+        if (array.containsKey("size") && array.get("size", t) instanceof CInt) {
+            size = (int) ((CInt) array.get("size", t)).getInt();
         }
 
         if (array.containsKey("title")) {
-            title = array.get("title").getValue();
+            title = array.get("title", t).getValue();
         }
 
         MCInventory inv = VirtualChests.create(id, size, title);

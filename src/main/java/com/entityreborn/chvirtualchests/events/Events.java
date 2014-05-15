@@ -89,7 +89,7 @@ public class Events {
             return true;
         }
 
-        public BindableEvent convert(CArray manualObject) {
+        public BindableEvent convert(CArray manualObject, Target t) {
             return null;
         }
 
@@ -148,7 +148,7 @@ public class Events {
             return true;
         }
 
-        public BindableEvent convert(CArray manualObject) {
+        public BindableEvent convert(CArray manualObject, Target t) {
             return null;
         }
 
