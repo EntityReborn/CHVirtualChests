@@ -489,7 +489,7 @@ public class General {
                         throw new ConfigRuntimeException("No id specified in array. Use either a string or integer.", Exceptions.ExceptionType.FormatException, t);
                     }
 
-                    id = items.get("id").val();
+                    id = items.get("id", t).val();
                 } else {
                     throw new ConfigRuntimeException("Expecting an array or null as argument 2", Exceptions.ExceptionType.CastException, t);
                 }
