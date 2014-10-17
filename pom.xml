@@ -139,7 +139,7 @@
         
         <repository>
             <id>bukkit-maven</id>
-            <url>http://repo.bukkit.org/content/repositories/releases/</url>
+            <url>http://r.zk.ms/maven2</url>
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>
