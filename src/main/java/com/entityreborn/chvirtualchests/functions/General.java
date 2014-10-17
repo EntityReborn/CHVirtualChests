@@ -30,6 +30,7 @@ import com.laytonsmith.abstraction.MCItemMeta;
 import com.laytonsmith.abstraction.MCItemStack;
 import com.laytonsmith.abstraction.StaticLayer;
 import com.laytonsmith.annotations.api;
+import com.laytonsmith.core.ArgumentValidation;
 import com.laytonsmith.core.CHVersion;
 import com.laytonsmith.core.ObjectGenerator;
 import com.laytonsmith.core.Static;
@@ -240,6 +241,8 @@ public class General {
 
                 if (args[1] instanceof CArray) {
                     items = (CArray) args[1];
+                    size  = Static.getInt32( ArgumentValidation.getItemFromArray( items, "size", t, new CInt( size, t )), t );
+                    title = ArgumentValidation.getItemFromArray( items, "title", t, new CString( title, t )).val();
                 } else if (args[0] instanceof CNull) {
                     VirtualChests.del(id);
 
