@@ -329,9 +329,9 @@ public class General {
 
             MCItemMeta meta;
             if (m != null) {
-                    meta = ObjectGenerator.GetGenerator().itemMeta(m, is.getTypeId(), t);
+                    meta = ObjectGenerator.GetGenerator().itemMeta(m, is.getType(), t);
             } else {
-                    meta = ObjectGenerator.GetGenerator().itemMeta(CNull.NULL, is.getTypeId(), t);
+                    meta = ObjectGenerator.GetGenerator().itemMeta(CNull.NULL, is.getType(), t);
             }
 
             is.setItemMeta(meta);

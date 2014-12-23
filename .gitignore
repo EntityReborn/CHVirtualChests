@@ -2,3 +2,5 @@
 /preferences.txt
 /test-backend/
 /logs/
+/.idea/
+*.iml
