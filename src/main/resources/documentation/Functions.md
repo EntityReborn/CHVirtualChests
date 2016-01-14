@@ -100,7 +100,7 @@ This will also close the virtualchest for any viewers.
 
 ---
 
-<a id="setvc"></a>`set_virtualchest(`[`@id`][id]`,` [`@itemarray`][itemarray]`)` - *Set a chest whose id is `@id` to contain the items from `@itemarray`.*
+<a id="setvc"></a>`set_virtualchest(`[`@id`][id]`,` [`@chestdata`][chestdata]`)` - *Set a chest whose id is `@id` to contain the items from `@itemarray`.*
 
 The original contents are replaced entirely.
 

@@ -143,12 +143,11 @@ public class General {
         }
 
         public Integer[] numArgs() {
-            return new Integer[]{1, 2};
+            return new Integer[]{1};
         }
 
         public String docs() {
-            return "void {[player,] id} Closes the specified virtualchest on either the"
-                    + " specified player, or all players viewing that virtualchest.";
+            return "void {id} Closes the specified virtualchest on all players viewing that virtualchest.";
         }
 
         public CHVersion since() {
@@ -195,14 +194,15 @@ public class General {
         }
 
         public Integer[] numArgs() {
-            return new Integer[]{1, 2};
+            return new Integer[]{1};
         }
 
         public String docs() {
-            return "void {id[, options]} Creates a cached virtual chest associated with a given id. The id is case "
-                    + "insensitive. options is expected to be an array which could "
-                    + "contain the optional following keys: size (int), title (string), items "
-                    + "(indexed list of items). Defaults to 54, \"Virtual Chest\" and empty, respectively.";
+            return "void {chestdata} Creates a cached virtual chest associated with a given id."
+                    + " The chestdata is expected to be an array with the key \"id\" (string) and "
+                    + " optionally \"size\" (int) and \"title\" (string). The array may also contain"
+                    + " item arrays under integer keys representing the slots in the virtual chest."
+                    + " Size defaults to 54, and title defaults to \"Virtual Chest\".";
         }
 
         public CHVersion since() {
@@ -275,7 +275,7 @@ public class General {
         }
 
         public String docs() {
-            return "void {id, array} Sets a cached virtual chest associated with a given id. The "
+            return "void {[id,] array} Sets a cached virtual chest associated with a given id. The "
                     + "array must be an indexed associative array, whose indexes correspond with "
                     + "slot locations and values are synonymous with those of set_pinv(). "
                     + "The array can be incomplete, indexes not mentioned will be "
@@ -499,7 +499,7 @@ public class General {
             inv = VirtualChests.get(id);
 
             if (inv != null) {
-            VirtualChests.setContents(inv, items, t);
+                VirtualChests.setContents(inv, items, t);
             }
 
             return CVoid.VOID;
@@ -514,7 +514,7 @@ public class General {
         }
 
         public String docs() {
-            return "void {id, array} Updates a cached virtual chest associated with a given id. The "
+            return "void {[id,] array} Updates a cached virtual chest associated with a given id. The "
                     + "array must be an indexed associative array, whose indexes correspond with "
                     + "slot locations and values are synonymous with those of set_pinv(). "
                     + "The array can be incomplete, indexes not mentioned will be "
