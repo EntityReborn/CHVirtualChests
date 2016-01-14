@@ -80,6 +80,9 @@ public class VirtualChests {
 
     public static MCInventory setContents(MCInventory inv, CArray items, Target t) {
         for (String key : items.stringKeySet()) {
+            if(key.equals("id") || key.equals("size") || key.equals("title")) {
+                continue;
+            }
             try {
                 int index = Integer.parseInt(key);
 
@@ -91,10 +94,12 @@ public class VirtualChests {
                         inv.setItem(index, is);
                     }
                 } else {
-                    ConfigRuntimeException.DoWarning("Out of range value (" + index + ") found in array passed to set_virtualchest(), so ignoring.");
+                    ConfigRuntimeException.DoWarning("Out of range value (" + index + ") found in array passed to"
+                            + " virtualchest, so ignoring.");
                 }
             } catch (NumberFormatException e) {
-                ConfigRuntimeException.DoWarning("Expecting integer value for key in array passed to set_pinv(), but \"" + key + "\" was found. Ignoring.");
+                ConfigRuntimeException.DoWarning("Expecting integer value for key in array passed to virtualchest, but"
+                        + " \"" + key + "\" was found. Ignoring.");
             }
         }
 
