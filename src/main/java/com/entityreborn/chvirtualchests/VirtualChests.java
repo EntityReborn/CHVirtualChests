@@ -101,38 +101,38 @@ public class VirtualChests {
         return inv;
     }
 
-    public static CArray toCArray(MCInventory inv) {
-        CArray items = CArray.GetAssociativeArray(Target.UNKNOWN);
+    public static CArray toCArray(MCInventory inv, Target t) {
+        CArray items = CArray.GetAssociativeArray(t);
 
         for (int i = 0; i < inv.getSize(); i++) {
-            Construct c = ObjectGenerator.GetGenerator().item(inv.getItem(i), Target.UNKNOWN);
-            items.set(i, c, Target.UNKNOWN);
+            Construct c = ObjectGenerator.GetGenerator().item(inv.getItem(i), t);
+            items.set(i, c, t);
         }
 
         items.set("id", getID(inv));
-        items.set("size", String.valueOf(inv.getSize()));
+        items.set("size", new CInt(inv.getSize(), t), t);
         items.set("title", inv.getTitle());
 
         return items;
     }
 
-    public static MCInventory fromCArray(Target t, CArray array) {
+    public static MCInventory fromCArray(CArray array, Target t) {
         String id = "";
         String title = "Virtual Chest";
         int size = 54;
 
         if (array.containsKey("id")) {
-            id = array.get("id", t).getValue();
+            id = array.get("id", t).val();
         } else {
-            throw new ConfigRuntimeException("Expecting item with key 'id' in arg 2 array", Exceptions.ExceptionType.FormatException, t);
+            throw new ConfigRuntimeException("Expecting item with key 'id' in array", Exceptions.ExceptionType.FormatException, t);
         }
 
-        if (array.containsKey("size") && array.get("size", t) instanceof CInt) {
-            size = (int) ((CInt) array.get("size", t)).getInt();
+        if (array.containsKey("size")) {
+            size = Static.getInt32(array.get("size", t), t);
         }
 
         if (array.containsKey("title")) {
-            title = array.get("title", t).getValue();
+            title = array.get("title", t).val();
         }
 
         MCInventory inv = VirtualChests.create(id, size, title);
