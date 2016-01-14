@@ -28,7 +28,6 @@ import com.laytonsmith.abstraction.MCHumanEntity;
 import com.laytonsmith.abstraction.MCInventory;
 import com.laytonsmith.abstraction.MCPlayer;
 import com.laytonsmith.annotations.api;
-import com.laytonsmith.annotations.shutdown;
 import com.laytonsmith.core.CHVersion;
 import com.laytonsmith.core.Static;
 import com.laytonsmith.core.constructs.CArray;
@@ -48,8 +47,7 @@ import com.laytonsmith.core.functions.Exceptions;
  */
 public class Player {
 
-    @shutdown
-    public static void onShutdown() {
+    public static void closeVirtualChests() {
         for (String id : VirtualChests.getAll()) {
             for (MCHumanEntity p : VirtualChests.get(id).getViewers()) {
                 if (p != null) {

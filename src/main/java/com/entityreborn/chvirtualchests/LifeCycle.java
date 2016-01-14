@@ -24,6 +24,8 @@
 
 package com.entityreborn.chvirtualchests;
 
+import com.entityreborn.chvirtualchests.events.Events;
+import com.entityreborn.chvirtualchests.functions.Player;
 import com.laytonsmith.PureUtilities.SimpleVersion;
 import com.laytonsmith.PureUtilities.Version;
 import com.laytonsmith.core.extensions.AbstractExtension;
@@ -37,11 +39,14 @@ import com.laytonsmith.core.extensions.MSExtension;
 public class LifeCycle extends AbstractExtension {
     @Override
     public void onStartup() {
+        Events.register();
         System.out.println("CHVC " + getVersion() + " loaded.");
     }
     
     @Override
     public void onShutdown() {
+        Player.closeVirtualChests();
+        Events.unregister();
         System.out.println("CHVC " + getVersion() + " unloaded.");
     }
 

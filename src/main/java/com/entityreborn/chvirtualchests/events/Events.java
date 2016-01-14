@@ -24,10 +24,12 @@
 package com.entityreborn.chvirtualchests.events;
 
 import com.laytonsmith.abstraction.MCInventory;
+import com.laytonsmith.abstraction.bukkit.BukkitMCInventory;
+import com.laytonsmith.abstraction.bukkit.events.BukkitInventoryEvents;
 import com.laytonsmith.abstraction.events.MCInventoryCloseEvent;
 import com.laytonsmith.abstraction.events.MCInventoryOpenEvent;
 import com.laytonsmith.annotations.api;
-import com.laytonsmith.annotations.event;
+import com.laytonsmith.commandhelper.CommandHelperPlugin;
 import com.laytonsmith.core.CHVersion;
 import com.laytonsmith.core.constructs.CArray;
 import com.laytonsmith.core.constructs.CString;
@@ -41,30 +43,47 @@ import com.laytonsmith.core.exceptions.EventException;
 import com.laytonsmith.core.exceptions.PrefilterNonMatchException;
 import java.util.Map;
 import com.entityreborn.chvirtualchests.VirtualChests;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryOpenEvent;
 
 /**
  *
  * @author Jason Unger <entityreborn@gmail.com>
  */
-public class Events {
+public class Events implements Listener {
 
-    @event
-    public void onOpen(MCInventoryOpenEvent event) {
-        MCInventory inv = event.getInventory();
-        String id = VirtualChests.getID(inv);
+    private static Events listener;
 
+    public static void register() {
+        if(listener == null) {
+            listener = new Events();
+        }
+        CommandHelperPlugin.self.registerEvents(listener);
+    }
+
+    public static void unregister() {
+        InventoryOpenEvent.getHandlerList().unregister(listener);
+        InventoryCloseEvent.getHandlerList().unregister(listener);
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onOpen(InventoryOpenEvent event) {
+        String id = VirtualChests.getID(new BukkitMCInventory(event.getInventory()));
         if (id != null) {
-            EventUtils.TriggerListener(Driver.EXTENSION, "virtualchest_opened", event);
+            EventUtils.TriggerListener(Driver.EXTENSION, "virtualchest_opened",
+                    new BukkitInventoryEvents.BukkitMCInventoryOpenEvent(event));
         }
     }
 
-    @event
-    public void onClose(MCInventoryCloseEvent event) {
-        MCInventory inv = event.getInventory();
-        String id = VirtualChests.getID(inv);
-
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onClose(InventoryCloseEvent event) {
+        String id = VirtualChests.getID(new BukkitMCInventory(event.getInventory()));
         if (id != null) {
-            EventUtils.TriggerListener(Driver.EXTENSION, "virtualchest_closed", event);
+            EventUtils.TriggerListener(Driver.EXTENSION, "virtualchest_closed",
+                    new BukkitInventoryEvents.BukkitMCInventoryCloseEvent(event));
         }
     }
 
@@ -98,14 +117,12 @@ public class Events {
             if (event instanceof MCInventoryOpenEvent) {
                 MCInventoryOpenEvent e = (MCInventoryOpenEvent) event;
                 Map<String, Construct> map = evaluate_helper(event);
-                
-                String id = VirtualChests.getID(e.getInventory());
-                
+
                 map.put("player", new CString(e.getPlayer().getName(), Target.UNKNOWN));
 
                 MCInventory inv = e.getInventory();
 
-                map.put("chest", VirtualChests.toCArray(inv));
+                map.put("chest", VirtualChests.toCArray(inv, Target.UNKNOWN));
 
                 return map;
             } else {
@@ -157,14 +174,12 @@ public class Events {
             if (event instanceof MCInventoryCloseEvent) {
                 MCInventoryCloseEvent e = (MCInventoryCloseEvent) event;
                 Map<String, Construct> map = evaluate_helper(event);
-                
-                String id = VirtualChests.getID(e.getInventory());
-                
+
                 map.put("player", new CString(e.getPlayer().getName(), Target.UNKNOWN));
                 
                 MCInventory inv = e.getInventory();
 
-                map.put("chest", VirtualChests.toCArray(inv));
+                map.put("chest", VirtualChests.toCArray(inv, Target.UNKNOWN));
 
                 return map;
             } else {
