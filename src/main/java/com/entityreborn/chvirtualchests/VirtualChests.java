@@ -32,8 +32,8 @@ import com.laytonsmith.core.constructs.CArray;
 import com.laytonsmith.core.constructs.CInt;
 import com.laytonsmith.core.constructs.Construct;
 import com.laytonsmith.core.constructs.Target;
+import com.laytonsmith.core.exceptions.CRE.CREFormatException;
 import com.laytonsmith.core.exceptions.ConfigRuntimeException;
-import com.laytonsmith.core.functions.Exceptions;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -80,6 +80,9 @@ public class VirtualChests {
 
     public static MCInventory setContents(MCInventory inv, CArray items, Target t) {
         for (String key : items.stringKeySet()) {
+            if(key.equals("id") || key.equals("size") || key.equals("title")) {
+                continue;
+            }
             try {
                 int index = Integer.parseInt(key);
 
@@ -91,48 +94,50 @@ public class VirtualChests {
                         inv.setItem(index, is);
                     }
                 } else {
-                    ConfigRuntimeException.DoWarning("Out of range value (" + index + ") found in array passed to set_virtualchest(), so ignoring.");
+                    ConfigRuntimeException.DoWarning("Out of range value (" + index + ") found in array passed to"
+                            + " virtualchest, so ignoring.");
                 }
             } catch (NumberFormatException e) {
-                ConfigRuntimeException.DoWarning("Expecting integer value for key in array passed to set_pinv(), but \"" + key + "\" was found. Ignoring.");
+                ConfigRuntimeException.DoWarning("Expecting integer value for key in array passed to virtualchest, but"
+                        + " \"" + key + "\" was found. Ignoring.");
             }
         }
 
         return inv;
     }
 
-    public static CArray toCArray(MCInventory inv) {
-        CArray items = CArray.GetAssociativeArray(Target.UNKNOWN);
+    public static CArray toCArray(MCInventory inv, Target t) {
+        CArray items = CArray.GetAssociativeArray(t);
 
         for (int i = 0; i < inv.getSize(); i++) {
-            Construct c = ObjectGenerator.GetGenerator().item(inv.getItem(i), Target.UNKNOWN);
-            items.set(i, c, Target.UNKNOWN);
+            Construct c = ObjectGenerator.GetGenerator().item(inv.getItem(i), t);
+            items.set(i, c, t);
         }
 
         items.set("id", getID(inv));
-        items.set("size", String.valueOf(inv.getSize()));
+        items.set("size", new CInt(inv.getSize(), t), t);
         items.set("title", inv.getTitle());
 
         return items;
     }
 
-    public static MCInventory fromCArray(Target t, CArray array) {
+    public static MCInventory fromCArray(CArray array, Target t) {
         String id = "";
         String title = "Virtual Chest";
         int size = 54;
 
         if (array.containsKey("id")) {
-            id = array.get("id", t).getValue();
+            id = array.get("id", t).val();
         } else {
-            throw new ConfigRuntimeException("Expecting item with key 'id' in arg 2 array", Exceptions.ExceptionType.FormatException, t);
+            throw new CREFormatException("Expecting item with key 'id' in array", t);
         }
 
-        if (array.containsKey("size") && array.get("size", t) instanceof CInt) {
-            size = (int) ((CInt) array.get("size", t)).getInt();
+        if (array.containsKey("size")) {
+            size = Static.getInt32(array.get("size", t), t);
         }
 
         if (array.containsKey("title")) {
-            title = array.get("title", t).getValue();
+            title = array.get("title", t).val();
         }
 
         MCInventory inv = VirtualChests.create(id, size, title);
