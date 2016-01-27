@@ -51,6 +51,6 @@ public class LifeCycle extends AbstractExtension {
     }
 
     public Version getVersion() {
-        return new SimpleVersion(1,0,4);
+        return new SimpleVersion(1,0,5);
     }
 }
