@@ -43,9 +43,11 @@ import com.laytonsmith.core.constructs.Construct;
 import com.laytonsmith.core.constructs.Target;
 import com.laytonsmith.core.environments.CommandHelperEnvironment;
 import com.laytonsmith.core.environments.Environment;
+import com.laytonsmith.core.exceptions.CRE.CRECastException;
+import com.laytonsmith.core.exceptions.CRE.CREFormatException;
+import com.laytonsmith.core.exceptions.CRE.CREThrowable;
 import com.laytonsmith.core.exceptions.ConfigRuntimeException;
 import com.laytonsmith.core.functions.AbstractFunction;
-import com.laytonsmith.core.functions.Exceptions;
 import java.util.Map;
 
 /**
@@ -57,8 +59,8 @@ public class General {
     @api(environments = {CommandHelperEnvironment.class})
     public static class get_virtualchest extends AbstractFunction {
 
-        public Exceptions.ExceptionType[] thrown() {
-            return new Exceptions.ExceptionType[]{Exceptions.ExceptionType.FormatException};
+        public Class<? extends CREThrowable>[] thrown() {
+            return new Class[]{CREFormatException.class};
         }
 
         public boolean isRestricted() {
@@ -73,7 +75,7 @@ public class General {
             String id = args[0].getValue();
 
             if (id.isEmpty() || args[0] instanceof CNull) {
-                throw new ConfigRuntimeException("invalid id. Use either a string or integer.", Exceptions.ExceptionType.FormatException, t);
+                throw new CREFormatException("invalid id. Use either a string or integer.", t);
             }
 
             MCInventory inv = VirtualChests.get(id);
@@ -108,7 +110,7 @@ public class General {
     @api(environments = {CommandHelperEnvironment.class})
     public static class close_virtualchest extends AbstractFunction {
 
-        public Exceptions.ExceptionType[] thrown() {
+        public Class<? extends CREThrowable>[] thrown() {
             return null;
         }
 
@@ -124,7 +126,7 @@ public class General {
             String id = args[0].getValue();
 
             if (id.isEmpty() || args[0] instanceof CNull) {
-                throw new ConfigRuntimeException("invalid id. Use either a string or integer.", Exceptions.ExceptionType.FormatException, t);
+                throw new CREFormatException("invalid id. Use either a string or integer.", t);
             }
 
             MCInventory inv = VirtualChests.get(id);
@@ -158,8 +160,8 @@ public class General {
     @api(environments = {CommandHelperEnvironment.class})
     public static class create_virtualchest extends AbstractFunction {
 
-        public Exceptions.ExceptionType[] thrown() {
-            return new Exceptions.ExceptionType[]{Exceptions.ExceptionType.FormatException};
+        public Class<? extends CREThrowable>[] thrown() {
+            return new Class[]{CREFormatException.class};
         }
 
         public boolean isRestricted() {
@@ -179,9 +181,8 @@ public class General {
                 items = (CArray) args[0];
                 inv = VirtualChests.fromCArray(items, t);
             } else {
-                throw new ConfigRuntimeException("bad arguments. Expecting item "
-                        + "array including 'id', and optionally 'size' and 'title'.",
-                        Exceptions.ExceptionType.FormatException, t);
+                throw new CREFormatException("bad arguments. Expecting item "
+                        + "array including 'id', and optionally 'size' and 'title'.", t);
             }
 
             VirtualChests.set(VirtualChests.getID(inv), inv);
@@ -213,8 +214,8 @@ public class General {
     @api(environments = {CommandHelperEnvironment.class})
     public static class set_virtualchest extends AbstractFunction {
 
-        public Exceptions.ExceptionType[] thrown() {
-            return new Exceptions.ExceptionType[]{Exceptions.ExceptionType.FormatException};
+        public Class<? extends CREThrowable>[] thrown() {
+            return new Class[]{CREFormatException.class};
         }
 
         public boolean isRestricted() {
@@ -233,7 +234,7 @@ public class General {
             CArray items;
             if (args.length == 2) {
                 if (args[0].val().isEmpty() || args[0] instanceof CNull) {
-                    throw new ConfigRuntimeException("invalid id. Use either a string or integer.", Exceptions.ExceptionType.FormatException, t);
+                    throw new CREFormatException("invalid id. Use either a string or integer.", t);
                 }
 
                 id = args[0].val();
@@ -250,7 +251,7 @@ public class General {
 
                     return CVoid.VOID;
                 } else {
-                    throw new ConfigRuntimeException("Expecting an array or null as argument 2", Exceptions.ExceptionType.CastException, t);
+                    throw new CRECastException("Expecting an array or null as argument 2", t);
                 }
             } else {
                 if (args[0] instanceof CArray) {
@@ -259,7 +260,7 @@ public class General {
                     id = VirtualChests.getID(inv);
                     VirtualChests.set(id, inv);
                 } else {
-                    throw new ConfigRuntimeException("Expecting an array or null as argument 1", Exceptions.ExceptionType.CastException, t);
+                    throw new CRECastException("Expecting an array or null as argument 1", t);
                 }
             }
 
@@ -291,8 +292,8 @@ public class General {
     @api(environments = {CommandHelperEnvironment.class})
     public static class addto_virtualchest extends AbstractFunction {
 
-        public Exceptions.ExceptionType[] thrown() {
-            return new Exceptions.ExceptionType[]{Exceptions.ExceptionType.FormatException};
+        public Class<? extends CREThrowable>[] thrown() {
+            return new Class[]{CREFormatException.class};
         }
 
         public boolean isRestricted() {
@@ -310,7 +311,7 @@ public class General {
             Construct m = null;
 
             if (args[0].val().isEmpty() || args[0] instanceof CNull) {
-                throw new ConfigRuntimeException("invalid id. Use either a string or integer.", Exceptions.ExceptionType.FormatException, t);
+                throw new CREFormatException("invalid id. Use either a string or integer.", t);
             }
 
             id = args[0].val();
@@ -373,8 +374,8 @@ public class General {
     @api(environments = {CommandHelperEnvironment.class})
     public static class takefrom_virtualchest extends AbstractFunction {
 
-        public Exceptions.ExceptionType[] thrown() {
-            return new Exceptions.ExceptionType[]{Exceptions.ExceptionType.FormatException};
+        public Class<? extends CREThrowable>[] thrown() {
+            return new Class[]{CREFormatException.class};
         }
 
         public boolean isRestricted() {
@@ -391,7 +392,7 @@ public class General {
             MCItemStack is;
 
             if (args[0].val().isEmpty() || args[0] instanceof CNull) {
-                throw new ConfigRuntimeException("invalid id. Use either a string or integer.", Exceptions.ExceptionType.FormatException, t);
+                throw new CREFormatException("invalid id. Use either a string or integer.", t);
             }
 
             id = args[0].val();
@@ -454,8 +455,8 @@ public class General {
     @api(environments = {CommandHelperEnvironment.class})
     public static class update_virtualchest extends AbstractFunction {
 
-        public Exceptions.ExceptionType[] thrown() {
-            return new Exceptions.ExceptionType[]{Exceptions.ExceptionType.FormatException};
+        public Class<? extends CREThrowable>[] thrown() {
+            return new Class[]{CREFormatException.class};
         }
 
         public boolean isRestricted() {
@@ -472,7 +473,7 @@ public class General {
             CArray items;
             if (args.length == 2) {
                 if (args[0].val().isEmpty() || args[0] instanceof CNull) {
-                    throw new ConfigRuntimeException("invalid id. Use either a string or integer.", Exceptions.ExceptionType.FormatException, t);
+                    throw new CREFormatException("invalid id. Use either a string or integer.", t);
                 }
 
                 id = args[0].val();
@@ -480,19 +481,19 @@ public class General {
                 if (args[1] instanceof CArray) {
                     items = (CArray) args[1];
                 } else {
-                    throw new ConfigRuntimeException("Expecting an array or null as argument 2", Exceptions.ExceptionType.CastException, t);
+                    throw new CRECastException("Expecting an array or null as argument 2", t);
                 }
             } else {
                 if (args[0] instanceof CArray) {
                     items = (CArray) args[0];
 
                     if (!items.containsKey("id")) {
-                        throw new ConfigRuntimeException("No id specified in array. Use either a string or integer.", Exceptions.ExceptionType.FormatException, t);
+                        throw new CREFormatException("No id specified in array. Use either a string or integer.", t);
                     }
 
                     id = items.get("id", t).val();
                 } else {
-                    throw new ConfigRuntimeException("Expecting an array or null as argument 2", Exceptions.ExceptionType.CastException, t);
+                    throw new CRECastException("Expecting an array or null as argument 2", t);
                 }
             }
 
@@ -531,8 +532,8 @@ public class General {
     @api(environments = {CommandHelperEnvironment.class})
     public static class del_virtualchest extends AbstractFunction {
 
-        public Exceptions.ExceptionType[] thrown() {
-            return new Exceptions.ExceptionType[]{Exceptions.ExceptionType.FormatException};
+        public Class<? extends CREThrowable>[] thrown() {
+            return new Class[]{CREFormatException.class};
         }
 
         public boolean isRestricted() {
@@ -547,7 +548,7 @@ public class General {
             String id = args[0].getValue();
 
             if (id.isEmpty() || args[0] instanceof CNull) {
-                throw new ConfigRuntimeException("invalid id. Use either a string or integer.", Exceptions.ExceptionType.FormatException, t);
+                throw new CREFormatException("invalid id. Use either a string or integer.", t);
             }
 
             if (VirtualChests.get(id) != null) {
@@ -581,7 +582,7 @@ public class General {
     @api(environments = {CommandHelperEnvironment.class})
     public static class all_virtualchests extends AbstractFunction {
 
-        public Exceptions.ExceptionType[] thrown() {
+        public Class<? extends CREThrowable>[] thrown() {
             return null;
         }
 
@@ -597,7 +598,7 @@ public class General {
             CArray arr = new CArray(t);
 
             for (String key : VirtualChests.getAll()) {
-                arr.push(new CString(key, t));
+                arr.push(new CString(key, t), t);
             }
 
             return arr;
@@ -623,7 +624,7 @@ public class General {
     @api(environments = {CommandHelperEnvironment.class})
     public static class clear_virtualchest extends AbstractFunction {
 
-        public Exceptions.ExceptionType[] thrown() {
+        public Class<? extends CREThrowable>[] thrown() {
             return null;
         }
 
@@ -639,7 +640,7 @@ public class General {
             String id = args[0].getValue();
 
             if (id.isEmpty() || args[0] instanceof CNull) {
-                throw new ConfigRuntimeException("invalid id. Use either a string or integer.", Exceptions.ExceptionType.FormatException, t);
+                throw new CREFormatException("invalid id. Use either a string or integer.", t);
             }
 
             MCInventory inv = VirtualChests.get(id);
@@ -652,14 +653,12 @@ public class General {
                     if (i >= 0 && i < inv.getSize()) {
                         inv.clear(i);
                     } else {
-                        throw new ConfigRuntimeException(
-                                "invalid slot. Use an integer 0 or above and less than "
-                                + inv.getSize(), Exceptions.ExceptionType.FormatException, t);
+                        throw new CREFormatException("invalid slot. Use an integer 0 or above and less than "
+                                + inv.getSize(), t);
                     }
                 } else {
-                    throw new ConfigRuntimeException(
-                            "invalid slot. Use an integer 0 or above and less than "
-                            + inv.getSize(), Exceptions.ExceptionType.FormatException, t);
+                    throw new CREFormatException("invalid slot. Use an integer 0 or above and less than "
+                            + inv.getSize(), t);
                 }
             } else {
                 inv.clear();

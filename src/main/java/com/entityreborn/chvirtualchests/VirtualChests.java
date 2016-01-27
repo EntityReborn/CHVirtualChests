@@ -32,8 +32,8 @@ import com.laytonsmith.core.constructs.CArray;
 import com.laytonsmith.core.constructs.CInt;
 import com.laytonsmith.core.constructs.Construct;
 import com.laytonsmith.core.constructs.Target;
+import com.laytonsmith.core.exceptions.CRE.CREFormatException;
 import com.laytonsmith.core.exceptions.ConfigRuntimeException;
-import com.laytonsmith.core.functions.Exceptions;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -129,7 +129,7 @@ public class VirtualChests {
         if (array.containsKey("id")) {
             id = array.get("id", t).val();
         } else {
-            throw new ConfigRuntimeException("Expecting item with key 'id' in array", Exceptions.ExceptionType.FormatException, t);
+            throw new CREFormatException("Expecting item with key 'id' in array", t);
         }
 
         if (array.containsKey("size")) {

@@ -37,9 +37,11 @@ import com.laytonsmith.core.constructs.Construct;
 import com.laytonsmith.core.constructs.Target;
 import com.laytonsmith.core.environments.CommandHelperEnvironment;
 import com.laytonsmith.core.environments.Environment;
+import com.laytonsmith.core.exceptions.CRE.CREFormatException;
+import com.laytonsmith.core.exceptions.CRE.CRENullPointerException;
+import com.laytonsmith.core.exceptions.CRE.CREThrowable;
 import com.laytonsmith.core.exceptions.ConfigRuntimeException;
 import com.laytonsmith.core.functions.AbstractFunction;
-import com.laytonsmith.core.functions.Exceptions;
 
 /**
  *
@@ -64,8 +66,8 @@ public class Player {
     @api(environments = {CommandHelperEnvironment.class})
     public static class popen_virtualchest extends AbstractFunction {
 
-        public Exceptions.ExceptionType[] thrown() {
-            return new Exceptions.ExceptionType[]{Exceptions.ExceptionType.FormatException};
+        public Class<? extends CREThrowable>[] thrown() {
+            return new Class[]{CREFormatException.class};
         }
 
         public boolean isRestricted() {
@@ -85,14 +87,14 @@ public class Player {
                 id = args[1].getValue();
 
                 if (id.isEmpty() || args[1] instanceof CNull) {
-                    throw new ConfigRuntimeException("invalid id. Use either a string or integer.", Exceptions.ExceptionType.FormatException, t);
+                    throw new CREFormatException("invalid id. Use either a string or integer.", t);
                 }
             } else {
                 p = environment.getEnv(CommandHelperEnvironment.class).GetPlayer();
                 id = args[0].getValue();
 
                 if (id.isEmpty() || args[0] instanceof CNull) {
-                    throw new ConfigRuntimeException("invalid id. Use either a string or integer.", Exceptions.ExceptionType.FormatException, t);
+                    throw new CREFormatException("invalid id. Use either a string or integer.", t);
                 }
             }
 
@@ -128,7 +130,7 @@ public class Player {
     @api(environments = {CommandHelperEnvironment.class})
     public static class pget_virtualchest extends AbstractFunction {
 
-        public Exceptions.ExceptionType[] thrown() {
+        public Class<? extends CREThrowable>[] thrown() {
             return null;
         }
 
@@ -182,9 +184,9 @@ public class Player {
     @api(environments = {CommandHelperEnvironment.class})
     public static class pviewing_virtualchest extends AbstractFunction {
 
-        public Exceptions.ExceptionType[] thrown() {
-            return new Exceptions.ExceptionType[]{Exceptions.ExceptionType.FormatException,
-                Exceptions.ExceptionType.NullPointerException};
+        public Class<? extends CREThrowable>[] thrown() {
+            return new Class[]{CREFormatException.class,
+                CRENullPointerException.class};
         }
 
         public boolean isRestricted() {
@@ -200,17 +202,17 @@ public class Player {
             String id = args[0].getValue();
 
             if (id.isEmpty() || args[0] instanceof CNull) {
-                throw new ConfigRuntimeException("invalid id. Use either a string or integer.", Exceptions.ExceptionType.FormatException, t);
+                throw new CREFormatException("invalid id. Use either a string or integer.", t);
             }
 
             MCInventory inv = VirtualChests.get(id);
 
             if (inv == null) {
-                throw new ConfigRuntimeException("unknown chest id. Please consult all_virtualchests().", Exceptions.ExceptionType.NullPointerException, t);
+                throw new CRENullPointerException("unknown chest id. Please consult all_virtualchests().", t);
             }
 
             for (MCHumanEntity p : inv.getViewers()) {
-                arr.push(new CString(p.getName(), t));
+                arr.push(new CString(p.getName(), t), t);
             }
 
             return arr;
