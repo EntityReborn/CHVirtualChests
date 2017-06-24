@@ -181,9 +181,14 @@ The original contents are still present if not replaced by the new array.
   Always required when working with a chest.
 [id]: #id
 
+* <a id="id"></a>`type` - String - *The inventory type.*
+
+  This supports most Bukkit Inventory types, most notably BREWING, CHEST, DISPENSER, FURNACE, HOPPER, WORKBENCH, ANVIL, and BEACON.
+[type]: #type
+
 * <a id="size"></a>`size` - Integer - *A capacity for a virtual chest.*
 
-  Must be a multiple of 9. Values greater than 54 will have graphical issues, but otherwise are accepted and functional. Defaults to `54`.
+  Only applies to CHEST inventory type. Must be a multiple of 9. Values greater than 54 will have graphical issues, but otherwise are accepted and functional. Defaults to `54`.
 [size]: #size
 
 * <a id="title"></a>`title` - String - *Displayed title when viewing a virtual chest.*
@@ -193,9 +198,9 @@ The original contents are still present if not replaced by the new array.
 
 * <a id="chestdata"></a>`chestdata` - Associative Array - *An array describing a virtual chest in a form that can be used with `get_value()` and `store_value()`.*
 
-  Contains `id` and optionally `size` and `title`, as well as entries for [`@itemdata`][itemdata] whose keys refer to the slot number. Functions that return this will return null values in empty slots.
+  Contains `id` and optionally `type`, `size` and `title`, as well as entries for [`@itemdata`][itemdata] whose keys refer to the slot number. Functions that return this will return null values in empty slots.
 
-  `size` defaults to `54`, and `title` defaults to `Virtual Chest`.
+  `size` defaults to `54`, `type` defaults to `CHEST`, and `title` defaults to `Virtual Chest`.
 [chestdata]: #chestdata
 
 * <a id="itemid"></a>`itemid` - Integer - *An ID of item.*

@@ -33,6 +33,7 @@ import com.laytonsmith.core.Static;
 import com.laytonsmith.core.constructs.CArray;
 import com.laytonsmith.core.constructs.CNull;
 import com.laytonsmith.core.constructs.CString;
+import com.laytonsmith.core.constructs.CVoid;
 import com.laytonsmith.core.constructs.Construct;
 import com.laytonsmith.core.constructs.Target;
 import com.laytonsmith.core.environments.CommandHelperEnvironment;
@@ -99,14 +100,10 @@ public class Player {
             }
 
             Static.AssertPlayerNonNull(p, t);
-
-            if (VirtualChests.get(id) == null) {
-                return CNull.NULL;
+            if (VirtualChests.get(id) != null) {
+                p.openInventory(VirtualChests.get(id));
             }
-
-            p.openInventory(VirtualChests.get(id));
-
-            return CNull.NULL;
+            return CVoid.VOID;
         }
 
         public String getName() {

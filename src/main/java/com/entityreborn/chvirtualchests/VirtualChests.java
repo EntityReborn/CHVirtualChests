@@ -26,14 +26,22 @@ package com.entityreborn.chvirtualchests;
 import com.laytonsmith.abstraction.MCInventory;
 import com.laytonsmith.abstraction.MCInventoryHolder;
 import com.laytonsmith.abstraction.MCItemStack;
+import com.laytonsmith.abstraction.bukkit.BukkitMCInventory;
+import com.laytonsmith.abstraction.enums.MCInventoryType;
+import com.laytonsmith.abstraction.enums.bukkit.BukkitMCInventoryType;
 import com.laytonsmith.core.ObjectGenerator;
 import com.laytonsmith.core.Static;
 import com.laytonsmith.core.constructs.CArray;
 import com.laytonsmith.core.constructs.CInt;
+import com.laytonsmith.core.constructs.CString;
 import com.laytonsmith.core.constructs.Construct;
 import com.laytonsmith.core.constructs.Target;
 import com.laytonsmith.core.exceptions.CRE.CREFormatException;
 import com.laytonsmith.core.exceptions.ConfigRuntimeException;
+import org.bukkit.Bukkit;
+import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.inventory.InventoryHolder;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -58,8 +66,10 @@ public class VirtualChests {
         return chests.keySet();
     }
 
-    public static MCInventory create(String id) {
-        return create(id, 54, "Virtual Chest");
+    public static MCInventory create(String id, MCInventoryType type, String title) {
+        VirtualHolder invHolder = new VirtualHolder(id.toLowerCase().trim());
+        InventoryType invType = BukkitMCInventoryType.getConvertor().getConcreteEnum(type);
+        return new BukkitMCInventory(Bukkit.createInventory((InventoryHolder)invHolder.getHandle(), invType, title));
     }
 
     public static MCInventory create(String id, int size, String title) {
@@ -80,7 +90,7 @@ public class VirtualChests {
 
     public static MCInventory setContents(MCInventory inv, CArray items, Target t) {
         for (String key : items.stringKeySet()) {
-            if(key.equals("id") || key.equals("size") || key.equals("title")) {
+            if(key.equals("id") || key.equals("size") || key.equals("title") || key.equals("type")) {
                 continue;
             }
             try {
@@ -116,6 +126,7 @@ public class VirtualChests {
 
         items.set("id", getID(inv));
         items.set("size", new CInt(inv.getSize(), t), t);
+        items.set("type", new CString(inv.getType().name(), t), t);
         items.set("title", inv.getTitle());
 
         return items;
@@ -124,7 +135,6 @@ public class VirtualChests {
     public static MCInventory fromCArray(CArray array, Target t) {
         String id = "";
         String title = "Virtual Chest";
-        int size = 54;
 
         if (array.containsKey("id")) {
             id = array.get("id", t).val();
@@ -132,17 +142,30 @@ public class VirtualChests {
             throw new CREFormatException("Expecting item with key 'id' in array", t);
         }
 
-        if (array.containsKey("size")) {
-            size = Static.getInt32(array.get("size", t), t);
-        }
-
         if (array.containsKey("title")) {
             title = array.get("title", t).val();
         }
 
-        MCInventory inv = VirtualChests.create(id, size, title);
-        VirtualChests.setContents(inv, array, t);
+        MCInventoryType type = MCInventoryType.CHEST;
+        if (array.containsKey("type")) {
+            try {
+                type = MCInventoryType.valueOf(array.get("type", t).val().toUpperCase());
+            } catch (IllegalArgumentException e) {
+                throw new CREFormatException("Invalid inventory type \"" + array.get("type", t).val() + "\"", t);
+            }
+        }
 
+        MCInventory inv;
+        if(type.equals(MCInventoryType.CHEST)) {
+            int size = 54;
+            if (array.containsKey("size")) {
+                size = Static.getInt32(array.get("size", t), t);
+            }
+            inv = VirtualChests.create(id, size, title);
+        } else {
+            inv = VirtualChests.create(id, type, title);
+        }
+        VirtualChests.setContents(inv, array, t);
         return inv;
     }
 
