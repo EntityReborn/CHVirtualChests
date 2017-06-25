@@ -316,7 +316,8 @@ public class General {
 
             id = args[0].val();
 
-            if (VirtualChests.get(id) == null) {
+            inv = VirtualChests.get(id);
+            if (inv == null) {
                 return CNull.NULL;
             }
 
@@ -334,8 +335,6 @@ public class General {
             }
 
             is.setItemMeta(meta);
-
-            inv = VirtualChests.get(id);
 
             Map<Integer, MCItemStack> h = inv.addItem(is);
 
@@ -397,13 +396,12 @@ public class General {
 
             id = args[0].val();
 
-            if (VirtualChests.get(id) == null) {
+            inv = VirtualChests.get(id);
+            if (inv == null) {
                 return CNull.NULL;
             }
 
             is = Static.ParseItemNotation(this.getName(), args[1].val(), Static.getInt32(args[2], t), t);
-
-            inv = VirtualChests.get(id);
 
             int total = is.getAmount();
             int remaining = is.getAmount();
