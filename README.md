@@ -1,5 +1,5 @@
-##CHVirtualChests...
-######... so you can have your chest and stash it too.
+## CHVirtualChests...
+###### ... so you can have your chest and stash it too.
 
 CHVirtualChests (aka CHVC) is a virtual chest implementation for CommandHelper, leveraging the extension system built in for this purpose.
 
@@ -12,10 +12,10 @@ Source code can be found [here][github].
 
 Wanna help out? Contact `LewsTherin` on IRC.
 
-##Installation
+## Installation
 Make sure you are running a dev build of CommandHelper, run it at least once, and dump the JAR file in plugins/CommandHelper/extensions.
 
-##Credits
+## Credits
 CommandHelper - `LadyCailin`
 
 Programming - [`LewsTherin`][import] aka EntityReborn
