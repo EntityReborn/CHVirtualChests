@@ -31,9 +31,13 @@ import com.laytonsmith.abstraction.MCItemStack;
 import com.laytonsmith.abstraction.StaticLayer;
 import com.laytonsmith.annotations.api;
 import com.laytonsmith.core.ArgumentValidation;
+import com.laytonsmith.core.CHLog;
 import com.laytonsmith.core.CHVersion;
 import com.laytonsmith.core.ObjectGenerator;
+import com.laytonsmith.core.Optimizable;
+import com.laytonsmith.core.ParseTree;
 import com.laytonsmith.core.Static;
+import com.laytonsmith.core.compiler.FileOptions;
 import com.laytonsmith.core.constructs.CArray;
 import com.laytonsmith.core.constructs.CInt;
 import com.laytonsmith.core.constructs.CNull;
@@ -46,9 +50,14 @@ import com.laytonsmith.core.environments.Environment;
 import com.laytonsmith.core.exceptions.CRE.CRECastException;
 import com.laytonsmith.core.exceptions.CRE.CREFormatException;
 import com.laytonsmith.core.exceptions.CRE.CREThrowable;
+import com.laytonsmith.core.exceptions.ConfigCompileException;
 import com.laytonsmith.core.exceptions.ConfigRuntimeException;
 import com.laytonsmith.core.functions.AbstractFunction;
+
+import java.util.EnumSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  *
@@ -290,7 +299,7 @@ public class General {
     }
 
     @api(environments = {CommandHelperEnvironment.class})
-    public static class addto_virtualchest extends AbstractFunction {
+    public static class addto_virtualchest extends AbstractFunction implements Optimizable {
 
         public Class<? extends CREThrowable>[] thrown() {
             return new Class[]{CREFormatException.class};
@@ -321,20 +330,22 @@ public class General {
                 return CNull.NULL;
             }
 
-            is = Static.ParseItemNotation(this.getName(), args[1].val(), Static.getInt32(args[2], t), t);
+            if(args.length == 2) {
+                is = ObjectGenerator.GetGenerator().item(args[1], t);
 
-            if(args.length == 4) {
-                m = args[3];
-            }
-
-            MCItemMeta meta;
-            if (m != null) {
-                    meta = ObjectGenerator.GetGenerator().itemMeta(m, is.getType(), t);
             } else {
+                is = Static.ParseItemNotation(this.getName(), args[1].val(), Static.getInt32(args[2], t), t);
+                if(args.length == 4) {
+                    m = args[3];
+                }
+                MCItemMeta meta;
+                if(m != null) {
+                    meta = ObjectGenerator.GetGenerator().itemMeta(m, is.getType(), t);
+                } else {
                     meta = ObjectGenerator.GetGenerator().itemMeta(CNull.NULL, is.getType(), t);
+                }
+                is.setItemMeta(meta);
             }
-
-            is.setItemMeta(meta);
 
             Map<Integer, MCItemStack> h = inv.addItem(is);
 
@@ -350,12 +361,11 @@ public class General {
         }
 
         public Integer[] numArgs() {
-            return new Integer[]{3, 4};
+            return new Integer[]{2, 3, 4};
         }
 
         public String docs() {
-            return "int {chestID, itemID, qty, [meta]} Adds to virtual chest the specified item * qty. The meta argument uses the"
-                    + " same format as [http://wiki.sk89q.com/wiki/CommandHelper/Staged/API/set_itemmeta set_itemmeta]."
+            return "int {chestID, itemArray} Adds to virtual chest the specified item."
                     + " Unlike update_virtualchest(), this does not specify a slot. The qty is distributed"
                     + " in the virtual chest, first filling up slots that have the same item"
                     + " type, up to the max stack size, then fills up empty slots, until either"
@@ -368,10 +378,24 @@ public class General {
         public CHVersion since() {
             return CHVersion.V3_3_1;
         }
+
+        @Override
+        public ParseTree optimizeDynamic(Target t, List<ParseTree> children, FileOptions fileOptions)
+                throws ConfigCompileException, ConfigRuntimeException {
+            if(children.size() > 2) {
+                CHLog.GetLogger().w(CHLog.Tags.DEPRECATION, "The string item format in " + getName() + " is deprecated.", t);
+            }
+            return null;
+        }
+
+        @Override
+        public Set<OptimizationOption> optimizationOptions() {
+            return EnumSet.of(OptimizationOption.OPTIMIZE_DYNAMIC);
+        }
     }
 
     @api(environments = {CommandHelperEnvironment.class})
-    public static class takefrom_virtualchest extends AbstractFunction {
+    public static class takefrom_virtualchest extends AbstractFunction implements Optimizable {
 
         public Class<? extends CREThrowable>[] thrown() {
             return new Class[]{CREFormatException.class};
@@ -401,7 +425,11 @@ public class General {
                 return CNull.NULL;
             }
 
-            is = Static.ParseItemNotation(this.getName(), args[1].val(), Static.getInt32(args[2], t), t);
+            if(args.length == 2) {
+                is = ObjectGenerator.GetGenerator().item(args[1], t);
+            } else {
+                is = Static.ParseItemNotation(this.getName(), args[1].val(), Static.getInt32(args[2], t), t);
+            }
 
             int total = is.getAmount();
             int remaining = is.getAmount();
@@ -417,9 +445,10 @@ public class General {
                     remaining -= toTake;
                     int replace = iis.getAmount() - toTake;
                     if (replace == 0) {
-                        inv.setItem(i, StaticLayer.GetItemStack(0, 0));
+                        inv.setItem(i, StaticLayer.GetItemStack("AIR", 0));
                     } else {
-                        inv.setItem(i, StaticLayer.GetItemStack(is.getTypeId(), is.getData().getData(), replace));
+                        iis.setAmount(replace);
+                        inv.setItem(i, iis);
                     }
                 }
             }
@@ -432,21 +461,35 @@ public class General {
         }
 
         public Integer[] numArgs() {
-            return new Integer[]{3};
+            return new Integer[]{2, 3};
         }
 
         public String docs() {
-            return "int {chestID, itemID, qty} Works in reverse of addto_virtualchest(), but"
+            return "int {chestID, itemArray} Works in reverse of addto_virtualchest(), but"
                     + " returns the number of items actually taken, which will be"
                     + " from 0 to qty.";
         }
 
         private boolean match(MCItemStack is, MCItemStack iis){
-            return (is.getTypeId() == iis.getTypeId() && is.getData().getData() == iis.getData().getData());
+            return !is.getType().equals(iis.getType());
         }
 
         public CHVersion since() {
             return CHVersion.V3_3_1;
+        }
+
+        @Override
+        public ParseTree optimizeDynamic(Target t, List<ParseTree> children, FileOptions fileOptions)
+                throws ConfigCompileException, ConfigRuntimeException {
+            if(children.size() > 2) {
+                CHLog.GetLogger().w(CHLog.Tags.DEPRECATION, "The string item format in " + getName() + " is deprecated.", t);
+            }
+            return null;
+        }
+
+        @Override
+        public Set<OptimizationOption> optimizationOptions() {
+            return EnumSet.of(OptimizationOption.OPTIMIZE_DYNAMIC);
         }
     }
 

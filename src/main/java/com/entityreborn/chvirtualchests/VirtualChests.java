@@ -100,7 +100,7 @@ public class VirtualChests {
 
                     MCItemStack is = ObjectGenerator.GetGenerator().item(items.get(index, t), t);
 
-                    if (is.getTypeId() != 0) {
+                    if (!is.isEmpty()) {
                         inv.setItem(index, is);
                     }
                 } else {
