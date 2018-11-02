@@ -22,12 +22,12 @@ Programming - [`LewsTherin`][import] aka EntityReborn
 
 Sponsor - [`kookster`][kookster]
 
-Build Hosting - [`chamunks`][hosting]
+Build Hosting - [`kookster`][hosting]
 
 [import]: http://github.com/EntityReborn/
 [github]: http://github.com/EntityReborn/CHVirtualChests
 [docs]: https://github.com/EntityReborn/CHVirtualChests/wiki/Documentation
 [issues]: https://github.com/EntityReborn/CHVirtualChests/issues
-[ci]: http://ci.nixium.com/job/CHVirtualChests/lastSuccessfulBuild/ 
-[kookster]: http://letsbuild.net
-[hosting]: http://nixium.com/ 
+[ci]: https://letsbuild.net/jenkins/job/CHVirtualChests/lastSuccessfulBuild/
+[kookster]: https://letsbuild.net/
+[hosting]: https://letsbuild.net/jenkins 
