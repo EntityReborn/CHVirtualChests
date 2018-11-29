@@ -32,7 +32,7 @@ import com.laytonsmith.abstraction.StaticLayer;
 import com.laytonsmith.annotations.api;
 import com.laytonsmith.core.ArgumentValidation;
 import com.laytonsmith.core.CHLog;
-import com.laytonsmith.core.CHVersion;
+import com.laytonsmith.core.MSVersion;
 import com.laytonsmith.core.ObjectGenerator;
 import com.laytonsmith.core.Optimizable;
 import com.laytonsmith.core.ParseTree;
@@ -43,7 +43,6 @@ import com.laytonsmith.core.constructs.CInt;
 import com.laytonsmith.core.constructs.CNull;
 import com.laytonsmith.core.constructs.CString;
 import com.laytonsmith.core.constructs.CVoid;
-import com.laytonsmith.core.constructs.Construct;
 import com.laytonsmith.core.constructs.Target;
 import com.laytonsmith.core.environments.CommandHelperEnvironment;
 import com.laytonsmith.core.environments.Environment;
@@ -53,6 +52,7 @@ import com.laytonsmith.core.exceptions.CRE.CREThrowable;
 import com.laytonsmith.core.exceptions.ConfigCompileException;
 import com.laytonsmith.core.exceptions.ConfigRuntimeException;
 import com.laytonsmith.core.functions.AbstractFunction;
+import com.laytonsmith.core.natives.interfaces.Mixed;
 
 import java.util.EnumSet;
 import java.util.List;
@@ -80,8 +80,8 @@ public class General {
             return false;
         }
 
-        public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
-            String id = args[0].getValue();
+        public Mixed exec(Target t, Environment environment, Mixed... args) throws ConfigRuntimeException {
+            String id = args[0].val();
 
             if (id.isEmpty() || args[0] instanceof CNull) {
                 throw new CREFormatException("invalid id. Use either a string or integer.", t);
@@ -111,8 +111,8 @@ public class General {
                     + "correspond with slot location. ";
         }
 
-        public CHVersion since() {
-            return CHVersion.V3_3_1;
+        public MSVersion since() {
+            return MSVersion.V3_3_1;
         }
     }
 
@@ -131,8 +131,8 @@ public class General {
             return false;
         }
 
-        public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
-            String id = args[0].getValue();
+        public Mixed exec(Target t, Environment environment, Mixed... args) throws ConfigRuntimeException {
+            String id = args[0].val();
 
             if (id.isEmpty() || args[0] instanceof CNull) {
                 throw new CREFormatException("invalid id. Use either a string or integer.", t);
@@ -161,8 +161,8 @@ public class General {
             return "void {id} Closes the specified virtualchest on all players viewing that virtualchest.";
         }
 
-        public CHVersion since() {
-            return CHVersion.V3_3_1;
+        public MSVersion since() {
+            return MSVersion.V3_3_1;
         }
     }
 
@@ -181,7 +181,7 @@ public class General {
             return false;
         }
 
-        public Construct exec(Target t, Environment environment, Construct... args)
+        public Mixed exec(Target t, Environment environment, Mixed... args)
                 throws ConfigRuntimeException {
             CArray items;
             MCInventory inv;
@@ -215,8 +215,8 @@ public class General {
                     + " Size defaults to 54, and title defaults to \"Virtual Chest\".";
         }
 
-        public CHVersion since() {
-            return CHVersion.V3_3_1;
+        public MSVersion since() {
+            return MSVersion.V3_3_1;
         }
     }
 
@@ -235,7 +235,7 @@ public class General {
             return false;
         }
 
-        public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
+        public Mixed exec(Target t, Environment environment, Mixed... args) throws ConfigRuntimeException {
             int size = 54;
             String title = "Virtual Chest";
             String id;
@@ -293,8 +293,8 @@ public class General {
                     + "Specifying null as the second argument deletes the virtualchest.";
         }
 
-        public CHVersion since() {
-            return CHVersion.V3_3_1;
+        public MSVersion since() {
+            return MSVersion.V3_3_1;
         }
     }
 
@@ -313,11 +313,11 @@ public class General {
             return false;
         }
 
-        public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
+        public Mixed exec(Target t, Environment environment, Mixed... args) throws ConfigRuntimeException {
             String id;
             MCInventory inv;
             MCItemStack is;
-            Construct m = null;
+            Mixed m = null;
 
             if (args[0].val().isEmpty() || args[0] instanceof CNull) {
                 throw new CREFormatException("invalid id. Use either a string or integer.", t);
@@ -375,8 +375,8 @@ public class General {
                     + " If the virtual chest is full, 0 is returned in this case instead of the amount given.";
         }
 
-        public CHVersion since() {
-            return CHVersion.V3_3_1;
+        public MSVersion since() {
+            return MSVersion.V3_3_1;
         }
 
         @Override
@@ -409,7 +409,7 @@ public class General {
             return false;
         }
 
-        public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
+        public Mixed exec(Target t, Environment environment, Mixed... args) throws ConfigRuntimeException {
             String id;
             MCInventory inv;
             MCItemStack is;
@@ -474,8 +474,8 @@ public class General {
             return !is.getType().equals(iis.getType());
         }
 
-        public CHVersion since() {
-            return CHVersion.V3_3_1;
+        public MSVersion since() {
+            return MSVersion.V3_3_1;
         }
 
         @Override
@@ -508,7 +508,7 @@ public class General {
             return false;
         }
 
-        public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
+        public Mixed exec(Target t, Environment environment, Mixed... args) throws ConfigRuntimeException {
             String id;
             MCInventory inv;
             CArray items;
@@ -565,8 +565,8 @@ public class General {
                     + "slots that are defined.";
         }
 
-        public CHVersion since() {
-            return CHVersion.V3_3_1;
+        public MSVersion since() {
+            return MSVersion.V3_3_1;
         }
     }
 
@@ -585,8 +585,8 @@ public class General {
             return false;
         }
 
-        public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
-            String id = args[0].getValue();
+        public Mixed exec(Target t, Environment environment, Mixed... args) throws ConfigRuntimeException {
+            String id = args[0].val();
 
             if (id.isEmpty() || args[0] instanceof CNull) {
                 throw new CREFormatException("invalid id. Use either a string or integer.", t);
@@ -615,8 +615,8 @@ public class General {
             return "void {id} Deletes a cached virtualchest.";
         }
 
-        public CHVersion since() {
-            return CHVersion.V3_3_1;
+        public MSVersion since() {
+            return MSVersion.V3_3_1;
         }
     }
 
@@ -635,7 +635,7 @@ public class General {
             return false;
         }
 
-        public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
+        public Mixed exec(Target t, Environment environment, Mixed... args) throws ConfigRuntimeException {
             CArray arr = new CArray(t);
 
             for (String key : VirtualChests.getAll()) {
@@ -657,8 +657,8 @@ public class General {
             return "array {} Returns the ids of all cached virtual chests.";
         }
 
-        public CHVersion since() {
-            return CHVersion.V3_3_1;
+        public MSVersion since() {
+            return MSVersion.V3_3_1;
         }
     }
 
@@ -677,8 +677,8 @@ public class General {
             return false;
         }
 
-        public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
-            String id = args[0].getValue();
+        public Mixed exec(Target t, Environment environment, Mixed... args) throws ConfigRuntimeException {
+            String id = args[0].val();
 
             if (id.isEmpty() || args[0] instanceof CNull) {
                 throw new CREFormatException("invalid id. Use either a string or integer.", t);
@@ -721,8 +721,8 @@ public class General {
                     + " given, clears that slot, otherwise clears the whole inventory.";
         }
 
-        public CHVersion since() {
-            return CHVersion.V3_3_1;
+        public MSVersion since() {
+            return MSVersion.V3_3_1;
         }
     }
 }

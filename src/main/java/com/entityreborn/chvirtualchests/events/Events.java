@@ -30,10 +30,9 @@ import com.laytonsmith.abstraction.events.MCInventoryCloseEvent;
 import com.laytonsmith.abstraction.events.MCInventoryOpenEvent;
 import com.laytonsmith.annotations.api;
 import com.laytonsmith.commandhelper.CommandHelperPlugin;
-import com.laytonsmith.core.CHVersion;
+import com.laytonsmith.core.MSVersion;
 import com.laytonsmith.core.constructs.CArray;
 import com.laytonsmith.core.constructs.CString;
-import com.laytonsmith.core.constructs.Construct;
 import com.laytonsmith.core.constructs.Target;
 import com.laytonsmith.core.events.AbstractEvent;
 import com.laytonsmith.core.events.BindableEvent;
@@ -43,6 +42,7 @@ import com.laytonsmith.core.exceptions.EventException;
 import com.laytonsmith.core.exceptions.PrefilterNonMatchException;
 import java.util.Map;
 import com.entityreborn.chvirtualchests.VirtualChests;
+import com.laytonsmith.core.natives.interfaces.Mixed;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -103,7 +103,7 @@ public class Events implements Listener {
                     + "{} ";
         }
 
-        public boolean matches(Map<String, Construct> prefilter, BindableEvent event)
+        public boolean matches(Map<String, Mixed> prefilter, BindableEvent event)
                 throws PrefilterNonMatchException {
             return true;
         }
@@ -112,11 +112,11 @@ public class Events implements Listener {
             return null;
         }
 
-        public Map<String, Construct> evaluate(BindableEvent event)
+        public Map<String, Mixed> evaluate(BindableEvent event)
                 throws EventException {
             if (event instanceof MCInventoryOpenEvent) {
                 MCInventoryOpenEvent e = (MCInventoryOpenEvent) event;
-                Map<String, Construct> map = evaluate_helper(event);
+                Map<String, Mixed> map = evaluate_helper(event);
 
                 map.put("player", new CString(e.getPlayer().getName(), Target.UNKNOWN));
 
@@ -134,13 +134,13 @@ public class Events implements Listener {
             return Driver.EXTENSION;
         }
 
-        public boolean modifyEvent(String key, Construct value,
+        public boolean modifyEvent(String key, Mixed value,
                 BindableEvent event) {
             return false;
         }
 
-        public CHVersion since() {
-            return CHVersion.V3_3_1;
+        public MSVersion since() {
+            return MSVersion.V3_3_1;
         }
     }
 
@@ -160,7 +160,7 @@ public class Events implements Listener {
                     + "{} ";
         }
 
-        public boolean matches(Map<String, Construct> prefilter, BindableEvent event)
+        public boolean matches(Map<String, Mixed> prefilter, BindableEvent event)
                 throws PrefilterNonMatchException {
             return true;
         }
@@ -169,11 +169,11 @@ public class Events implements Listener {
             return null;
         }
 
-        public Map<String, Construct> evaluate(BindableEvent event)
+        public Map<String, Mixed> evaluate(BindableEvent event)
                 throws EventException {
             if (event instanceof MCInventoryCloseEvent) {
                 MCInventoryCloseEvent e = (MCInventoryCloseEvent) event;
-                Map<String, Construct> map = evaluate_helper(event);
+                Map<String, Mixed> map = evaluate_helper(event);
 
                 map.put("player", new CString(e.getPlayer().getName(), Target.UNKNOWN));
                 
@@ -191,13 +191,13 @@ public class Events implements Listener {
             return Driver.EXTENSION;
         }
 
-        public boolean modifyEvent(String key, Construct value,
+        public boolean modifyEvent(String key, Mixed value,
                 BindableEvent event) {
             return false;
         }
 
-        public CHVersion since() {
-            return CHVersion.V3_3_1;
+        public MSVersion since() {
+            return MSVersion.V3_3_1;
         }
     }
 }
