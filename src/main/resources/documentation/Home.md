@@ -28,6 +28,6 @@ Build Hosting - [`chamunks`][hosting]
 [github]: http://github.com/EntityReborn/CHVirtualChests
 [docs]: https://github.com/EntityReborn/CHVirtualChests/wiki/Documentation
 [issues]: https://github.com/EntityReborn/CHVirtualChests/issues
-[ci]: http://ci.nixium.com/job/CHVirtualChests/lastSuccessfulBuild/
+[ci]: https://letsbuild.net/jenkins/job/CHVirtualChests/lastSuccessfulBuild/
 [kookster]: http://letsbuild.net
 [hosting]: http://nixium.com/

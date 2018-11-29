@@ -28,13 +28,12 @@ import com.laytonsmith.abstraction.MCHumanEntity;
 import com.laytonsmith.abstraction.MCInventory;
 import com.laytonsmith.abstraction.MCPlayer;
 import com.laytonsmith.annotations.api;
-import com.laytonsmith.core.CHVersion;
+import com.laytonsmith.core.MSVersion;
 import com.laytonsmith.core.Static;
 import com.laytonsmith.core.constructs.CArray;
 import com.laytonsmith.core.constructs.CNull;
 import com.laytonsmith.core.constructs.CString;
 import com.laytonsmith.core.constructs.CVoid;
-import com.laytonsmith.core.constructs.Construct;
 import com.laytonsmith.core.constructs.Target;
 import com.laytonsmith.core.environments.CommandHelperEnvironment;
 import com.laytonsmith.core.environments.Environment;
@@ -43,6 +42,7 @@ import com.laytonsmith.core.exceptions.CRE.CRENullPointerException;
 import com.laytonsmith.core.exceptions.CRE.CREThrowable;
 import com.laytonsmith.core.exceptions.ConfigRuntimeException;
 import com.laytonsmith.core.functions.AbstractFunction;
+import com.laytonsmith.core.natives.interfaces.Mixed;
 
 /**
  *
@@ -79,20 +79,20 @@ public class Player {
             return false;
         }
 
-        public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
+        public Mixed exec(Target t, Environment environment, Mixed... args) throws ConfigRuntimeException {
             MCPlayer p;
             String id;
 
             if (args.length == 2) {
                 p = Static.GetPlayer(args[0], t);
-                id = args[1].getValue();
+                id = args[1].val();
 
                 if (id.isEmpty() || args[1] instanceof CNull) {
                     throw new CREFormatException("invalid id. Use either a string or integer.", t);
                 }
             } else {
                 p = environment.getEnv(CommandHelperEnvironment.class).GetPlayer();
-                id = args[0].getValue();
+                id = args[0].val();
 
                 if (id.isEmpty() || args[0] instanceof CNull) {
                     throw new CREFormatException("invalid id. Use either a string or integer.", t);
@@ -119,8 +119,8 @@ public class Player {
                     + " specified player, or the player calling the function.";
         }
 
-        public CHVersion since() {
-            return CHVersion.V3_3_1;
+        public MSVersion since() {
+            return MSVersion.V3_3_1;
         }
     }
 
@@ -139,7 +139,7 @@ public class Player {
             return false;
         }
 
-        public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
+        public Mixed exec(Target t, Environment environment, Mixed... args) throws ConfigRuntimeException {
             MCPlayer p;
 
             if (args.length == 1) {
@@ -173,8 +173,8 @@ public class Player {
                     + " looking at, or null.";
         }
 
-        public CHVersion since() {
-            return CHVersion.V3_3_1;
+        public MSVersion since() {
+            return MSVersion.V3_3_1;
         }
     }
 
@@ -194,9 +194,9 @@ public class Player {
             return false;
         }
 
-        public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
+        public Mixed exec(Target t, Environment environment, Mixed... args) throws ConfigRuntimeException {
             CArray arr = new CArray(t);
-            String id = args[0].getValue();
+            String id = args[0].val();
 
             if (id.isEmpty() || args[0] instanceof CNull) {
                 throw new CREFormatException("invalid id. Use either a string or integer.", t);
@@ -227,8 +227,8 @@ public class Player {
             return "array {id} Returns the playernames of all players viewing a certain chest.";
         }
 
-        public CHVersion since() {
-            return CHVersion.V3_3_1;
+        public MSVersion since() {
+            return MSVersion.V3_3_1;
         }
     }
 }
