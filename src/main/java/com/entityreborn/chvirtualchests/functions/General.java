@@ -380,8 +380,8 @@ public class General {
         }
 
         @Override
-        public ParseTree optimizeDynamic(Target t, Environment env, List<ParseTree> children, FileOptions fileOptions)
-                throws ConfigCompileException, ConfigRuntimeException {
+        public ParseTree optimizeDynamic(Target t, Environment env, Set<Class<? extends Environment.EnvironmentImpl>> envs,
+                List<ParseTree> children, FileOptions fileOptions) throws ConfigCompileException, ConfigRuntimeException {
             if(children.size() > 2) {
                 MSLog.GetLogger().w(MSLog.Tags.DEPRECATION, "The string item format in " + getName() + " is deprecated.", t);
             }
@@ -479,8 +479,8 @@ public class General {
         }
 
         @Override
-        public ParseTree optimizeDynamic(Target t, Environment env, List<ParseTree> children, FileOptions fileOptions)
-                throws ConfigCompileException, ConfigRuntimeException {
+        public ParseTree optimizeDynamic(Target t, Environment env, Set<Class<? extends Environment.EnvironmentImpl>> envs,
+                List<ParseTree> children, FileOptions fileOptions) throws ConfigCompileException, ConfigRuntimeException {
             if(children.size() > 2) {
                 MSLog.GetLogger().w(MSLog.Tags.DEPRECATION, "The string item format in " + getName() + " is deprecated.", t);
             }
