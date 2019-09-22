@@ -67,7 +67,7 @@ public class VirtualChests {
     }
 
     public static MCInventory create(String id, MCInventoryType type, String title) {
-        VirtualHolder invHolder = new VirtualHolder(id.toLowerCase().trim());
+        VirtualHolder invHolder = new VirtualHolder(id.toLowerCase().trim(), title);
         InventoryType invType = BukkitMCInventoryType.getConvertor().getConcreteEnum(type);
         return new BukkitMCInventory(Bukkit.createInventory((InventoryHolder)invHolder.getHandle(), invType, title));
     }
@@ -80,7 +80,7 @@ public class VirtualChests {
         int s = size / 9 * 9; // Assert that the size is multiple of 9.
 
         return Static.getServer().createInventory(
-                new VirtualHolder(id.toLowerCase().trim()), s, title);
+                new VirtualHolder(id.toLowerCase().trim(), title), s, title);
     }
 
     public static MCInventory del(String id) {
