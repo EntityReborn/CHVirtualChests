@@ -72,8 +72,9 @@ public class VirtualHolder implements MCInventoryHolder {
         Holder holder;
         String title;
 
-        public VirtualHolder(String i, String title) {
+        public VirtualHolder(String i, String t) {
             id = i;
+            title = t;
         }
 
         public String getID() {
