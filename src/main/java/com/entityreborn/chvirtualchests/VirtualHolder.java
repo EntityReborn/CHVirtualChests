@@ -25,6 +25,7 @@ package com.entityreborn.chvirtualchests;
 
 import com.laytonsmith.abstraction.MCInventory;
 import com.laytonsmith.abstraction.MCInventoryHolder;
+import org.bukkit.Nameable;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 
@@ -34,10 +35,11 @@ import org.bukkit.inventory.InventoryHolder;
  */
 public class VirtualHolder implements MCInventoryHolder {
     // Make bukkit happy.
-    public static class Holder implements InventoryHolder {
+    public static class Holder implements InventoryHolder, Nameable {
 
         String id;
         VirtualHolder parent;
+        String title;
 
         public Holder(String i, VirtualHolder p) {
             id = i;
@@ -55,12 +57,24 @@ public class VirtualHolder implements MCInventoryHolder {
 
             return null;
         }
+
+        @Override
+        public String getCustomName() {
+            return title;
+        }
+
+        @Override
+        public void setCustomName(String s) {
+            title = s;
+        }
     }
         String id;
         Holder holder;
+        String title;
 
-        public VirtualHolder(String i) {
+        public VirtualHolder(String i, String t) {
             id = i;
+            title = t;
         }
 
         public String getID() {
@@ -74,6 +88,7 @@ public class VirtualHolder implements MCInventoryHolder {
         public Object getHandle() {
             if (holder == null) {
                 holder = new Holder(id, this);
+                holder.setCustomName(title);
             }
 
             return holder;
